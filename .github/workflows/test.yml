@@ -56,5 +56,5 @@ jobs:
           aws s3 cp \
             s3://${{ secrets.WEBAPP_BUCKET_NAME }}/index.html \
             s3://${{ secrets.WEBAPP_BUCKET_NAME }}/index.html \
-            --cache-control no-store, no-cache
+            --cache-control "no-store, no-cache"
         working-directory: ${{ env.wd }}
