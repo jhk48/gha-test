@@ -16,11 +16,6 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ secrets.NODE_VERSION }}
-
       - name: Install lerna
         run: yarn global add lerna
 
@@ -35,6 +30,23 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: lerna bootstrap
 
+      - name: Create env file
+        run: |
+          touch .env
+          echo API_SERVER_URL=${{ secrets.API_SERVER_URL }} >> .env
+          echo SOCKET_SERVER_URL=${{ secrets.SOCKET_SERVER_URL }} >> .env
+          echo AVATAR_IMAGE_BASE_URL=${{ secrets.AVATAR_IMAGE_BASE_URL }} >> .env
+          echo OAUTH_REDIRECT_BASE_URL=${{ secrets.OAUTH_REDIRECT_BASE_URL }} >> .env
+          echo GOOGLE_OAUTH_BASE_URL=${{ secrets.GOOGLE_OAUTH_BASE_URL }} >> .env
+          echo GOOGLE_OAUTH_SCOPE=${{ secrets.GOOGLE_OAUTH_SCOPE }} >> .env
+          echo GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }} >> .env
+          echo GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }} >> .env
+        working-directory: ${{ env.wd }}
+
       - name: Build webapp
         run: yarn build
         working-directory: ${{ env.wd }}
+
+      - name: finalize deploying webapp
+        run: |
+          aws s3 cp --recursive --region ap-northeast-2 dist s3://${{ secrets.WEBAPP_BUCKET_NAME }}
