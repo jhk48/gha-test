@@ -25,7 +25,7 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      
+
       - name: Install All Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: lerna bootstrap
@@ -50,3 +50,4 @@ jobs:
       - name: finalize deploying webapp
         run: |
           aws s3 cp --recursive --region ap-northeast-2 dist s3://${{ secrets.WEBAPP_BUCKET_NAME }}
+        working-directory: ${{ env.wd }}
