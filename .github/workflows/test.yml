@@ -53,6 +53,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          aws s3 cp --recursive dist s3://${{ secrets.WEBAPP_BUCKET_NAME }} --exclude "index.html"
-          aws s3 cp dist/index.html s3://${{ secrets.WEBAPP_BUCKET_NAME }} --cache-control="no-store,no-cache"
+          aws cloudfront create-invalidation --distribution-id="${${ secrets.CLOUDFRONT_ID }} --paths="/*"
+          aws s3 cp dist s3://${{ secrets.WEBAPP_BUCKET_NAME }} --recursive --exclude="*" --include="*.html" --cache-control="no-store,no-cache"
+          aws s3 cp dist s3://${{ secrets.WEBAPP_BUCKET_NAME }} --recursive --exclude="*.html" --cache-control="max-age=315360000"
         working-directory: ${{ env.wd }}
