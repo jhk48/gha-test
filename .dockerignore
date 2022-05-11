@@ -1,0 +1,5 @@
+packages/**/node_modules
+packages/**/logs
+packages/**/yarn-error.log
+packages/**/coverage
+packages/**/server/prisma/migrations

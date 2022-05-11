@@ -1,0 +1,35 @@
+FROM node:16.14
+
+ENV TZ=Asia/Seoul
+
+RUN apt-get -y update
+
+RUN apt-get install -y cron
+
+RUN touch /var/log/cron.log
+
+COPY cronjob /etc/cron.d/cronjob
+
+RUN chmod 0644 /etc/cron.d/cronjob
+
+RUN yarn global add lerna
+
+COPY package.json .
+
+RUN yarn
+
+COPY tsconfig.json .
+COPY packages/library ./packages/library
+COPY packages/shared ./packages/shared
+COPY packages/server ./packages/server
+
+COPY lerna.json .
+
+RUN lerna bootstrap
+
+WORKDIR /packages/server
+
+EXPOSE 5000
+
+ENTRYPOINT cron -f
+

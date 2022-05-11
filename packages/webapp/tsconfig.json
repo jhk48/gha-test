@@ -1,0 +1,68 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "module": "es6",
+    "noEmit": true,
+    "composite": true,
+    "paths": {
+      "@prisma/client": [
+        "../server/node_modules/@prisma/client/index"
+      ],
+      "@portbullio/library/*": [
+        "../library/*"
+      ],
+      "@portbullio/shared/*": [
+        "../shared/*"
+      ],
+      "@api/*": [
+        "src/api/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@configs/*": [
+        "src/configs/*"
+      ],
+      "@constants/*": [
+        "src/constants/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@src/*": [
+        "src/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@types": [
+        "src/types/index.ts"
+      ],
+      "@utils": [
+        "src/utils/index.ts"
+      ],
+    }
+  },
+  "references": [
+    {
+      "path": "../library"
+    },
+    {
+      "path": "../shared"
+    }
+  ],
+  "include": [
+    "src/**/*"
+  ],
+}

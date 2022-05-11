@@ -1,0 +1,20 @@
+config:
+  target: 'https://socket.portbullio.com'
+  socketio:
+    transports: ['websocket']
+  phases:
+    - duration: 10
+      arrivalRate: 300
+scenarios:
+  - name: 'When non-logged in user enters Homepage'
+    engine: 'socketio'
+    flow:
+      - emit:
+          channel: 'SUBSCRIBE_MAJOR_INDICES_DATA'
+      - emit:
+          channel: 'REQ_MAJOR_INDICES_DATA'
+      - emit:
+          channel: 'REQ_ALL_TOP_STOCKS_DATA'
+      - emit:
+          channel: 'SUBSCRIBE_TOP_STOCKS_DATA'
+          data: 'all'

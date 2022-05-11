@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int                 @id @default(autoincrement()) @map("user_id")
+  username          String              @db.VarChar(30)
+  email             String              @db.VarChar(128) @unique
+  avatar            String?             @db.VarChar(41)
+  currency          String              @db.Char(3)
+  bio               String?             @db.Text
+  location          String?             @db.Text
+  createdAt         DateTime            @default(now()) @db.Timestamp(0) @map("created_at")
+  defaultPortfolio  DefaultPortfolio[]
+  favoriteStock     FavoriteStock[]
+  portfolio         Portfolio[]
+  dailyAssetRecord  DailyAssetRecord[]
+
+  @@map("user")
+  @@index([email], map: "email_idx")
+}
+
+model Portfolio {
+  id                  Int                     @id @default(autoincrement()) @map("portfolio_id")
+  userId              Int                     @map("user_id")
+  name                String                  @db.VarChar(20) @map("portfolio_name")
+  privacy             PortfolioPrivacy
+  createdAt           DateTime                @default(now()) @db.Timestamp(0) @map("created_at")
+  user                User                    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "fk_portfolio_user_user_id")
+  cashTransactionLog  CashTransactionLog[]
+  defaultPortfolio    DefaultPortfolio[]
+  stockTransactionLog StockTransactionLog[]
+  dailyAssetRecord    DailyAssetRecord[]
+
+  @@map("portfolio")
+  @@index([userId], map: "user_id_idx")
+}
+
+model FavoriteStock {
+  userId  Int    @map("user_id")
+  ticker  String @db.VarChar(5)
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade, map: "fk_favorite_stock_user_user_id")
+
+  @@map("favorite_stock")
+  @@id([userId, ticker])
+}
+
+model CashTransactionLog {
+  id                  Int                 @id @default(autoincrement()) @map("cash_transaction_id")
+  portfolioId         Int                 @map("portfolio_id")
+  amount              Float
+  memo                String?             @db.Text
+  transactionType     CashTransactionType @map("transaction_type")
+  createdAt           DateTime            @default(now()) @db.Timestamp(0) @map("created_at")
+  portfolio           Portfolio           @relation(fields: [portfolioId], references: [id], onDelete: Cascade, map: "fk_cash_transaction_log_portfolio_portfolio_id")
+
+  @@map("cash_transaction_log")
+  @@index([portfolioId], map: "fk_cash_transaction_log_portfolio_portfolio_id_idx")
+}
+
+model DefaultPortfolio {
+  userId       Int       @map("user_id")
+  portfolioId  Int       @map("portfolio_id")
+  portfolio    Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade, map: "fk_default_portfolio_portfolio_portfolio_id")
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade, map: "fk_default_portfolio_user_user_id")
+
+  @@map("default_portfolio")
+  @@id([userId, portfolioId])
+  @@index([portfolioId], map: "fk_default_portfolio_portfolio_portfolio_id_idx")
+}
+
+model StockTransactionLog {
+  id                  Int                  @id @default(autoincrement()) @map("stock_transaction_id")
+  portfolioId         Int                  @map("portfolio_id")
+  ticker              String               @db.VarChar(5)
+  price               Float
+  quantity            Int
+  memo                String?              @db.Text
+  transactionType     StockTransactionType @map("transaction_type")
+  avgBuyCost          Float?               @map("avg_buy_cost")
+  createdAt           DateTime             @default(now()) @db.Timestamp(0) @map("created_at")
+  portfolio           Portfolio            @relation(fields: [portfolioId], references: [id], onDelete: Cascade, map: "fk_stock_transaction_log_portfolio_portfolio_id")
+
+  @@map("stock_transaction_log")
+  @@index([portfolioId], map: "fk_stock_transaction_log_portfolio_portfolio_id_idx")
+}
+
+model StockMeta {
+  ticker   String @id @db.VarChar(8)
+  exchange String @db.VarChar(8)
+  name     String @db.VarChar(121)
+  type     StockType
+  sector   String @db.VarChar(72)
+
+  @@map("stock_meta")
+  @@index([name], map: "stock_meta_name_index")
+}
+
+model DailyAssetRecord {
+  id           Int       @id @default(autoincrement()) @map("daily_record_id")
+  userId       Int       @map("user_id")
+  portfolioId  Int       @map("portfolio_id")
+  totalAsset   Float     @map("total_asset")
+  dailyReturn  Float     @map("daily_return")
+  createdAt    DateTime  @default(now()) @db.Timestamp(0) @map("created_at")
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade, map: "fk_daily_asset_record_user_user_id")
+  portfolio    Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade, map: "fk_daily_asset_record_portfolio_portfolio_id")
+
+  @@map("daily_asset_record")
+}
+
+enum PortfolioPrivacy {
+  public
+  private
+}
+
+enum CashTransactionType {
+  deposit
+  withdraw
+  purchased
+  sold
+  dividend
+}
+
+enum StockTransactionType {
+  buy
+  sell
+}
+
+enum StockType {
+  ad
+  cef
+  cs
+  et
+  oef
+  ps
+  rt
+  struct
+  ut
+  wt
+}

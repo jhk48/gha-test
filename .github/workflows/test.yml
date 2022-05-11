@@ -3,7 +3,7 @@ name: Test-workflow
 on:
   pull_request:
     branches: [main]
-    types: [closed, labeled]
+    types: [closed]
 
 jobs:
   frontend:
@@ -11,8 +11,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: testtest
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github.event.pull_request.labels.*.name) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ secrets.NODE_VERSION }}
+
+      - name: Install lerna
+        run: yarn global add lerna
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      
+      - name: Install All Dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: lerna bootstrap

@@ -1,0 +1,19 @@
+{
+  "name": "@portbullio/library",
+  "version": "1.0.0",
+  "author": "jaehyeon48 <imjaehyeon48@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --watchAll",
+    "format": "prettier --check ./src",
+    "format:fix": "prettier --write ./src",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src",
+    "precommit": "npm run format:fix && npm run lint:fix"
+  },
+  "devDependencies": {
+    "@types/sinon": "^10.0.11",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "sinon": "^13.0.1"
+  }
+}

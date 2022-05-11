@@ -1,0 +1,58 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "composite": true,
+    "paths": {
+      "@portbullio/library/*": [
+        "../library/*"
+      ],
+      "@portbullio/shared/*": [
+        "../shared/*"
+      ],
+      "@api": [
+        "src/api/index.ts"
+      ],
+      "@config": [
+        "src/config/index.ts"
+      ],
+      "@constants": [
+        "src/constants/index.ts"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
+      "@loaders": [
+        "src/loaders/index.ts"
+      ],
+      "@middlewares": [
+        "src/middlewares/index.ts"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+      "@src/*": [
+        "src/*"
+      ],
+      "@types": [
+        "src/types.ts"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "../library"
+    },
+    {
+      "path": "../shared"
+    }
+  ],
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/worker/*"
+  ]
+}

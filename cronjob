@@ -1,0 +1,1 @@
+59 4 * * 2-6 root cd /packages/server && /usr/local/bin/node -r tsconfig-paths/register -r ts-node/register ./src/saveDailyRecord/index.ts > /proc/1/fd/1 2>/proc/1/fd/2

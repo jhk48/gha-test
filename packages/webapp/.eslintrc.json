@@ -1,0 +1,58 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript",
+    "plugin:jest/recommended",
+    "plugin:jest-dom/recommended",
+    "plugin:testing-library/react",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "jest",
+    "jest-dom",
+    "prettier"
+  ],
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "project": "**/tsconfig.json"
+  },
+  "ignorePatterns": [
+    "jest.config.js",
+    "webpack.*",
+    "__mocks__"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-restricted-exports": "off",
+    "react/require-default-props": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "func-names": "off",
+    "react/jsx-no-bind": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-useless-return": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "no-unsafe-optional-chaining": "off",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+    "no-plusplus": "off"
+  }
+}
