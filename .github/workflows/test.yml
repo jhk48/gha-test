@@ -7,7 +7,7 @@ on:
 
 jobs:
   frontend:
-    if: github.event.pull_request.merged == true && github.event.label.name == 'frontend'
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels, 'frontend')
     runs-on: ubuntu-latest
 
     steps:
