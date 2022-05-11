@@ -6,9 +6,11 @@ on:
     types: [closed]
 
 jobs:
-  frontend:
+  deploy_webapp:
     if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'frontend')
     runs-on: ubuntu-latest
+    env:
+      wd: ./packages/webapp
 
     steps:
       - name: Checkout source code
@@ -35,3 +37,4 @@ jobs:
 
       - name: Build webapp
         run: yarn build
+        working-directory: ${{ env.wd }}
