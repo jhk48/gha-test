@@ -1,0 +1,14 @@
+name: Test-workflow
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+jobs:
+  frontend:
+    if: github.event.pull_request.merged == true && github.event.label.name == 'frontend'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
