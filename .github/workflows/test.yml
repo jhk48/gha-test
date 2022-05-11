@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
-        
+
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -32,3 +32,6 @@ jobs:
       - name: Install All Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: lerna bootstrap
+
+      - name: Build webapp
+        run: yarn build
