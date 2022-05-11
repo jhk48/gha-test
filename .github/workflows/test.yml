@@ -13,6 +13,6 @@ jobs:
     steps:
       - name: testtest
         env:
-          GITHUB_CONTEXT: ${{ toJson(github.event.pull_request) }}
+          GITHUB_CONTEXT: ${{ toJson(github.event.pull_request.labels) }}
         run: |
           echo "$GITHUB_CONTEXT"
