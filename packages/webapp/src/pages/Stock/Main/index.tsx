@@ -52,7 +52,7 @@ export default function StockMain() {
 							<DynamicCaret value={stockOverviewData?.change ?? 0} width={24} height={24} />
 							{formatNum(stockOverviewData?.change ?? 0)}
 						</Style.PriceChange>
-						&#40;{formatNum((stockOverviewData?.changePercent ?? 0).toFixed(2))}%&#41;
+						&#40;{formatNum(stockOverviewData?.changePercent ?? 0)}%&#41;
 					</Style.PriceChangeContainer>
 				</Style.PriceSection>
 				<Style.StockMenuSection>

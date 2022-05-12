@@ -19,7 +19,7 @@ describe('format num util function', () => {
 	});
 
 	test('Should format a real number', () => {
-		expect(formatNum(0.123)).toBe('0.123');
-		expect(formatNum(1234.567)).toBe('1,234.567');
+		expect(formatNum(0.123)).toBe('0.12');
+		expect(formatNum(1234.567)).toBe('1,234.57');
 	});
 });

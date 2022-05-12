@@ -33,7 +33,10 @@ function App(): ReactElement {
 			<Routes>
 				<Route path="/" element={<Page.BaseLayout />}>
 					<Route path="/" element={<Page.TopStocksDataContextWrapper />}>
-						<Route index element={<Page.HomePage />} />
+						<Route index element={<Page.HomeMainPage />} />
+						<Route path="most-actives" element={<Page.MostActivesFullListPage />} />
+						<Route path="most-gainers" element={<Page.MostGainersFullListPage />} />
+						<Route path="most-losers" element={<Page.MostLosersFullListPage />} />
 					</Route>
 					<Route path="auth-error" element={<Page.AuthError />} />
 					<Route path="welcome" element={<Page.WelcomePage />} />

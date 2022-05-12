@@ -14,6 +14,6 @@ describe('format currency util function', () => {
 		expect(formatCurrency('123', 'krw')).toBe('₩123');
 		expect(formatCurrency('1234', 'krw')).toBe('₩1,234');
 		expect(formatCurrency(123456, 'krw')).toBe('₩123,456');
-		expect(formatCurrency(12345678.12, 'krw')).toBe('₩12,345,678');
+		expect(formatCurrency(12345678.12, 'krw')).toBe('₩12,345,678.12');
 	});
 });

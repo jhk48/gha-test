@@ -1,5 +1,5 @@
 import { DynamicCaret } from '@components/index';
-import { formatNum, prefixPlusChar } from '@utils';
+import { formatNum } from '@utils';
 import * as Style from './styles';
 
 interface Props {
@@ -20,15 +20,14 @@ export default function IndexInfo({
 			<Style.IndexHeader>{indexName}</Style.IndexHeader>
 			<Style.IndexInfo value={indexValueChangePercent}>
 				<Style.IndexPriceContainer>
-					<Style.IndexPrice>{formatNum(indexValue.toFixed(2))}</Style.IndexPrice>
+					<Style.IndexPrice>{formatNum(indexValue)}</Style.IndexPrice>
 					<Style.IndexPriceChange>
 						<DynamicCaret value={indexValueChangePercent} width={20} height={20} />
 						{formatNum(indexValueChange)}
 					</Style.IndexPriceChange>
 				</Style.IndexPriceContainer>
 				<Style.IndexChangePercent>
-					{prefixPlusChar(indexValueChangePercent)}
-					{indexValueChangePercent.toFixed(2)}%
+					{formatNum(indexValueChangePercent, { signDisplay: 'exceptZero' })}%
 				</Style.IndexChangePercent>
 			</Style.IndexInfo>
 		</Style.IndexContainer>

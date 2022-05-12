@@ -2,12 +2,17 @@ import { useRef, useEffect, useState } from 'react';
 import { Holding } from '@portbullio/shared/src/types';
 import { PieChart as PieChartIcon } from '@components/index';
 import { useThemeMode } from '@hooks/index';
-import { getHoldingsTickers } from '@utils';
-import { SectorInfo, SectorPieChartRatio } from '@types';
+import { formatNum, getHoldingsTickers } from '@utils';
 import { ItemHeader, ItemIconContainer, NoticeEmptyHoldingsList } from '../styles';
 import * as Style from './styles';
 import { adjustToDpr } from '../utils';
-import { drawPieChart, translateSectorToKor } from './utils';
+import {
+	calcSectorRatios,
+	convertToSectorChartData,
+	drawPieChart,
+	initializeSectorMap,
+	translateSectorToKor
+} from './utils';
 import { useSectors } from './queries';
 import SelectNumOfItems from '../SelectNumOfItems';
 import DetailsPage from './SectorChartDetails';
@@ -78,7 +83,7 @@ export default function SectorPieChart({ holdingsList }: Props) {
 									<Style.LegendListItem key={sector}>
 										<Style.LegendColorBox backgroundColor={sectorPieChartColors(theme, idx)} />
 										<Style.LegendItemText>
-											{translateSectorToKor(sector)}&nbsp;&#40;{(ratio * 100).toFixed(2)}%&#41;
+											{translateSectorToKor(sector)}&nbsp;&#40;{formatNum(ratio * 100)}%&#41;
 										</Style.LegendItemText>
 									</Style.LegendListItem>
 								))}
@@ -94,40 +99,4 @@ export default function SectorPieChart({ holdingsList }: Props) {
 			/>
 		</Style.SectorPieChartSection>
 	);
-}
-
-function initializeSectorMap(sectors: SectorInfo[]) {
-	const result = new Map<string, string[]>(sectors.map(({ sector }) => [sector, []]));
-	sectors.forEach(({ sector, ticker }) => result.get(sector)?.push(ticker));
-	return result;
-}
-
-function calcSectorRatios(
-	sectorMap: Map<string, string[]>,
-	numOfHoldings: number
-): SectorPieChartRatio[] {
-	return [...sectorMap]
-		.map(([sector, tickers]) => ({
-			sector,
-			ratio: tickers.length / numOfHoldings,
-			includedStocks: [...tickers]
-		}))
-		.sort((a, b) => b.ratio - a.ratio);
-}
-
-function convertToSectorChartData(sectorRatios: SectorPieChartRatio[], numOfItems: number) {
-	if (sectorRatios.length === numOfItems) return sectorRatios;
-
-	const others: SectorPieChartRatio = {
-		sector: '기타',
-		ratio: sectorRatios.slice(numOfItems - 1).reduce((acc, el) => acc + el.ratio, 0),
-		includedStocks: sectorRatios
-			.slice(numOfItems - 1)
-			.map(({ includedStocks }) => [...includedStocks])
-			.flat()
-	};
-
-	return numOfItems === 1
-		? [others]
-		: [...sectorRatios.slice(0, numOfItems - 1), others].sort((a, b) => b.ratio - a.ratio);
 }

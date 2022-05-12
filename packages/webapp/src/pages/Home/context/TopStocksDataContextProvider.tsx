@@ -3,6 +3,9 @@ import { TopActives, TopGainers, TopLosers } from '@portbullio/shared/src/types'
 
 interface ProviderProps {
 	children: React.ReactNode;
+	initialTopActivesData?: TopActives;
+	initialTopGainersData?: TopGainers;
+	initialTopLosersData?: TopLosers;
 }
 
 type TopActivesUpdater = React.Dispatch<React.SetStateAction<TopActives | undefined>>;
@@ -18,10 +21,15 @@ const TopGainersUpdateContext = React.createContext<TopGainersUpdater | null>(nu
 const TopLosersContext = React.createContext<TopLosers | null | undefined>(null);
 const TopLosersUpdateContext = React.createContext<TopLosersUpdater | null>(null);
 
-export function TopStocksDataContextProvider({ children }: ProviderProps) {
-	const [topActives, setTopActives] = React.useState<TopActives>();
-	const [topGainers, setTopGainers] = React.useState<TopGainers>();
-	const [topLosers, setTopLosers] = React.useState<TopLosers>();
+export function TopStocksDataContextProvider({
+	children,
+	initialTopGainersData,
+	initialTopActivesData,
+	initialTopLosersData
+}: ProviderProps) {
+	const [topActives, setTopActives] = React.useState<TopActives | undefined>(initialTopActivesData);
+	const [topGainers, setTopGainers] = React.useState<TopGainers | undefined>(initialTopGainersData);
+	const [topLosers, setTopLosers] = React.useState<TopLosers | undefined>(initialTopLosersData);
 
 	return (
 		<TopActivesContext.Provider value={topActives}>

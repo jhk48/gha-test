@@ -48,6 +48,7 @@ export const SearchResultContainer = styled.ul`
 	overflow-y: scroll;
 	background-color: var(--navbarBgColor);
 
+	scrollbar-width: none;
 	::-webkit-scrollbar {
 		width: 0;
 	}

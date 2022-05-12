@@ -16,8 +16,6 @@ RUN yarn global add lerna
 
 COPY package.json .
 
-RUN yarn
-
 COPY tsconfig.json .
 COPY packages/library ./packages/library
 COPY packages/shared ./packages/shared

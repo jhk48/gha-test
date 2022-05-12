@@ -54,12 +54,22 @@ export const ProportionByValueChartCanvas = styled.canvas`
 `;
 
 export const DetailsContainer = styled(Card)`
+	display: flex;
+	flex-direction: column;
 	width: 40%;
 	height: 100%;
 	padding: ${CANVAS_PADDING_PX}px 4px;
 
 	& > ul {
 		max-height: calc(100% - ${ITEM_UPPER_LOWER_PADDING_PX * 2}px - 1.1em * 1.5 - 16px * 1.5);
+	}
+`;
+
+export const DetailsListContainer = styled.div`
+	overflow-y: scroll;
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		width: 0;
 	}
 `;
 

@@ -2,20 +2,13 @@ import { useParams, Navigate } from 'react-router-dom';
 import { StockTransactionLog } from '@prisma/client';
 import * as ListPage from '@components/ListPage';
 import { usePortfolioList, useHoldingsList, useTitle } from '@hooks/index';
-import { DECIMAL_DIGITS } from '@constants/index';
 import {
 	ListQueryErrorBoundary,
 	Filter as FilterIcon,
 	ArrowBack as ArrowBackIcon,
 	useSelectedPortfolioId
 } from '@components/index';
-import {
-	formatNum,
-	formatCurrency,
-	getHoldingOfTicker,
-	prefixPlusChar,
-	truncateDecimalPoint
-} from '@utils';
+import { formatNum, formatCurrency, getHoldingOfTicker } from '@utils';
 import * as Style from './styles';
 import StockTransactionList from './StockTransactionList';
 import { useStockTransactionLogs } from '../queries';
@@ -59,16 +52,13 @@ export default function StockTransactions() {
 				<Style.TotalRealizedProfitLossSection>
 					<Style.TotalRealizedProfitLossAmount value={totalRealizedProfitLossAmount}>
 						<span>총 실현손익: </span>
-						{formatCurrency(
-							truncateDecimalPoint(totalRealizedProfitLossAmount, DECIMAL_DIGITS),
-							'usd'
-						)}
-						&nbsp;&#40;{prefixPlusChar(totalRealizedProfitLossPercent)}
-						{formatNum(truncateDecimalPoint(totalRealizedProfitLossPercent, DECIMAL_DIGITS))}%&#41;
+						{formatCurrency(totalRealizedProfitLossAmount, 'usd')}
+						&nbsp;&#40;
+						{formatNum(totalRealizedProfitLossPercent, { signDisplay: 'exceptZero' })}%&#41;
 					</Style.TotalRealizedProfitLossAmount>
 					<Style.CurrentAvgCost>
 						<span>평단가: </span>
-						{formatCurrency(truncateDecimalPoint(holdingInfo?.avgCost ?? 0, DECIMAL_DIGITS), 'usd')}
+						{formatCurrency(holdingInfo?.avgCost ?? 0, 'usd')}
 					</Style.CurrentAvgCost>
 				</Style.TotalRealizedProfitLossSection>
 			</ListPage.UpperSection>

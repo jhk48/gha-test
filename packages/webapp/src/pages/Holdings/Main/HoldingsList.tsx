@@ -2,7 +2,7 @@ import { ListItems, ListItem, EmptyListNotice } from '@components/ListPage';
 import DynamicCaret from '@components/DynamicCaret';
 import { Holding } from '@portbullio/shared/src/types';
 import { useRealtimeData } from '@hooks/index';
-import { formatNum, formatCurrency, prefixPlusChar } from '@utils';
+import { formatNum, formatCurrency } from '@utils';
 import * as Style from './styles';
 
 interface Props {
@@ -40,8 +40,8 @@ export default function HoldingsList({ holdingsList, isLoading }: Props) {
 						</Style.HoldingDetailsSection>
 						<Style.HoldingCurrentPriceSection value={realtimeChange}>
 							<DynamicCaret width={20} height={20} value={realtimeChange} marginTop={2} />
-							{formatCurrency(realtimePrice, 'usd')}&#40;{prefixPlusChar(realtimeChange)}
-							{realtimeChange}&#41;
+							{formatCurrency(realtimePrice, 'usd')}&#40;
+							{formatNum(realtimeChange, { signDisplay: 'exceptZero' })}&#41;
 						</Style.HoldingCurrentPriceSection>
 						<Style.HoldingAvgPriceSection>
 							{formatCurrency(avgCost, 'usd')}
@@ -55,15 +55,13 @@ export default function HoldingsList({ holdingsList, isLoading }: Props) {
 						<Style.HoldingDailyGainSection value={realtimeChangePercent}>
 							<DynamicCaret width={20} height={20} value={realtimeChangePercent} marginTop={2} />
 							{formatCurrency(realtimeChange * holdingQuantity, 'usd')}&#40;
-							{prefixPlusChar(realtimeChangePercent)}
-							{realtimeChangePercent.toFixed(2)}
+							{formatNum(realtimeChangePercent, { signDisplay: 'exceptZero' })}
 							%&#41;
 						</Style.HoldingDailyGainSection>
 						<Style.HoldingTotalGainSection value={totalGain}>
 							<DynamicCaret width={20} height={20} value={totalGain} marginTop={2} />
 							{formatCurrency(totalGain, 'usd')}&#40;
-							{prefixPlusChar(totalGainPercent)}
-							{totalGainPercent.toFixed(2)}
+							{formatNum(totalGainPercent, { signDisplay: 'exceptZero' })}
 							%&#41;
 						</Style.HoldingTotalGainSection>
 					</ListItem>

@@ -9,6 +9,7 @@ export default function formatCurrency(
 	return Intl.NumberFormat(currencyCode[currency], {
 		style: 'currency',
 		currency,
+		maximumFractionDigits: 2,
 		...options
 	}).format(num);
 }

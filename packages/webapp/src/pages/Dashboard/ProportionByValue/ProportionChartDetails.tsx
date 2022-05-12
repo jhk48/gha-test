@@ -24,26 +24,29 @@ export default function ProportionChartDetails({ chartData, maxRatio, numOfBars 
 				<Style.DetailsListValueHeader>평가 금액</Style.DetailsListValueHeader>
 				<Style.DetailsListRatioHeader>비중</Style.DetailsListRatioHeader>
 			</Style.DetailsListHeaders>
-			<ListItems
-				isListEmpty={chartData.length === 0}
-				emptyListNoticeMessage="보유 종목이 없습니다."
-			>
-				{chartData.map(({ ticker, value, ratio }, idx) => (
-					<Style.DetailsItem key={ticker}>
-						<Style.Ticker>
-							<p>{ticker}</p>
-							{chartData.length !== numOfBars && idx >= numOfBars - 1 && (
-								<Style.OthersCategoryNotice>기타</Style.OthersCategoryNotice>
-							)}
-						</Style.Ticker>
-						<Style.Value>{formatCurrency(value, 'usd')}</Style.Value>
-						<Style.Ratio>
-							<Style.RatioColorBar width={(ratio / adjustedMaxRatio) * 100} />
-							<Style.RatioText>{formatNum(ratio.toFixed(2))}%</Style.RatioText>
-						</Style.Ratio>
-					</Style.DetailsItem>
-				))}
-			</ListItems>
+			<Style.DetailsListContainer>
+				<ListItems
+					isListEmpty={chartData.length === 0}
+					emptyListNoticeMessage="보유 종목이 없습니다."
+					maxHeight="100%"
+				>
+					{chartData.map(({ ticker, value, ratio }, idx) => (
+						<Style.DetailsItem key={ticker}>
+							<Style.Ticker>
+								<p>{ticker}</p>
+								{chartData.length !== numOfBars && idx >= numOfBars - 1 && (
+									<Style.OthersCategoryNotice>기타</Style.OthersCategoryNotice>
+								)}
+							</Style.Ticker>
+							<Style.Value>{formatCurrency(value, 'usd')}</Style.Value>
+							<Style.Ratio>
+								<Style.RatioColorBar width={(ratio / adjustedMaxRatio) * 100} />
+								<Style.RatioText>{formatNum(ratio)}%</Style.RatioText>
+							</Style.Ratio>
+						</Style.DetailsItem>
+					))}
+				</ListItems>
+			</Style.DetailsListContainer>
 		</Style.DetailsContainer>
 	);
 }

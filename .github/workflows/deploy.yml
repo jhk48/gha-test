@@ -1,4 +1,4 @@
-name: Test-workflow
+name: Deploy application
 
 on:
   pull_request:
@@ -47,7 +47,7 @@ jobs:
         run: yarn build
         working-directory: ${{ env.wd }}
 
-      - name: finalize deploying webapp
+      - name: Finalize deploying webapp
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
@@ -55,5 +55,5 @@ jobs:
         run: |
           aws cloudfront create-invalidation --distribution-id="${{ secrets.CLOUDFRONT_ID }}" --paths="/*"
           aws s3 cp dist s3://${{ secrets.WEBAPP_BUCKET_NAME }} --recursive --exclude="*" --include="*.html" --cache-control="no-store,no-cache"
-          aws s3 cp dist s3://${{ secrets.WEBAPP_BUCKET_NAME }} --recursive --exclude="*.html" --cache-control="max-age=315360000"
+          aws s3 cp dist s3://${{ secrets.WEBAPP_BUCKET_NAME }} --recursive --exclude="*.html" --cache-control="max-age=31536000"
         working-directory: ${{ env.wd }}

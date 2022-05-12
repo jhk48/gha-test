@@ -5,7 +5,7 @@ import * as Style from './styles';
 import TopStocks from './TopStocks';
 import HomeMainButton from './HomeMainButton';
 import IndexInfo from './IndexInfo';
-import { useMajorIndicesData, useTopStocksData } from './hooks';
+import { useMajorIndicesData, useTopStocksData } from '../hooks';
 
 export default function Home() {
 	const majorIndicesData = useMajorIndicesData();

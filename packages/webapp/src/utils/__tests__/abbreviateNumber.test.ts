@@ -66,8 +66,8 @@ describe(`provide 'krw' arg`, () => {
 	test('Less than one million', () => {
 		expect(abbreviateNumber(0, 'krw')).toBe('₩0');
 		expect(abbreviateNumber(1, 'krw')).toBe('₩1');
-		expect(abbreviateNumber(1.23, 'krw')).toBe('₩1');
-		expect(abbreviateNumber(1234.56, 'krw')).toBe('₩1,235');
+		expect(abbreviateNumber(1.23, 'krw')).toBe('₩1.23');
+		expect(abbreviateNumber(1234.56, 'krw')).toBe('₩1,234.56');
 	});
 
 	test('Less than one billion', () => {

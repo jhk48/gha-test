@@ -128,6 +128,7 @@ export const ListItemsContainer = styled.div<ListItemsContainerProps>`
 	max-height: ${({ maxHeight }) => maxHeight ?? '50vh'};
 	overflow-y: scroll;
 
+	scrollbar-width: none;
 	::-webkit-scrollbar {
 		width: 0;
 	}

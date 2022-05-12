@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { CustomWrapper } from '@lib/testingLibrary/react';
-import Home from '..';
+import Home from '../Main';
 import { TopStocksDataContextProvider } from '../context';
 
 describe('Home page', () => {

@@ -65,6 +65,7 @@ const OuterContainer = styled.div`
 	max-width: 100%;
 	overflow-x: scroll;
 
+	scrollbar-width: none;
 	::-webkit-scrollbar {
 		width: 0;
 	}
