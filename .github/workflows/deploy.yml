@@ -99,5 +99,11 @@ jobs:
           echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
           echo AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }} >> .env
 
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
       - name: Build and push server image
         run: ./push-api-server.sh
