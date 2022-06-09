@@ -107,3 +107,11 @@ jobs:
 
       - name: Build and push server image
         run: ./push-api-server.sh
+
+      - name: Pull server image and run container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: sudo ./run-server.sh $(git rev-parse --short "$GITHUB_SHA")
