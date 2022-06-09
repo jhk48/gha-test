@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 export default function expireCookie(res: Response, cookieName: string): void {
 	res.cookie(cookieName, '', {
-		domain: '.portb',
+		domain: '.portbu',
 		httpOnly: true,
 		sameSite: 'strict',
 		secure: true,
