@@ -16,6 +16,10 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
+      - name: Set short commit hash
+        id: vars
+        run: echo "::set-output name=short_commit_hash::$(git rev-parse --short HEAD)"
+
       - name: Install lerna
         run: yarn global add lerna
 
@@ -114,4 +118,4 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           user: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          script: sudo ./run-server.sh $(git rev-parse --short "$GITHUB_SHA")
+          script: sudo ./run-server.sh ${{ steps.vars.outputs.short_commit_hash }}
