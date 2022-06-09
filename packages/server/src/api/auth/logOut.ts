@@ -10,6 +10,7 @@ export default (): express.Router => {
 			const { uaat } = req.cookies;
 			await sessionService.deleteSession(uaat);
 			cookieService.expireCookie(res, 'uaat');
+			cookieService.expireCookie(res, 'ust');
 			res.send();
 		} catch (error) {
 			next(error);

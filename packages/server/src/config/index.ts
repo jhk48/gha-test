@@ -17,6 +17,7 @@ export default {
 	socketServerUrl: process.env.SOCKET_SERVER_URL,
 	origin: process.env.ORIGIN,
 	sessionIdTTLInSec: Number(process.env.SESSION_ID_TTL_IN_SEC),
+	cookieDomain: process.env.COOKIE_DOMAIN,
 	maxCookieAge: process.env.MAX_COOKIE_AGE,
 	oauth: {
 		redirectBaseUrl: process.env.OAUTH_REDIRECT_BASE_URL,
