@@ -16,10 +16,6 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Set short commit hash
-        id: vars
-        run: echo "::set-output name=short_commit_hash::$(git rev-parse --short HEAD)"
-
       - name: Install lerna
         run: yarn global add lerna
 
@@ -70,38 +66,42 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Install lerna
-        run: yarn global add lerna
+      - name: Set short commit hash
+        id: vars
+        run: echo "::set-output name=short_commit_hash::$(git rev-parse --short HEAD)"
 
-      - name: Cache node modules
-        uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      # - name: Install lerna
+      #   run: yarn global add lerna
 
-      - name: Install All Dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: lerna bootstrap
+      # - name: Cache node modules
+      #   uses: actions/cache@v3
+      #   id: yarn-cache
+      #   with:
+      #     path: '**/node_modules'
+      #     key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Create env file
-        run: |
-          touch .env
-          echo PORT=${{ secrets.PORT }} >> .env
-          echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
-          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
-          echo COOKIE_DOMAIN=${{ secrets.COOKIE_DOMAIN }} >> .env
-          echo MAX_COOKIE_AGE=${{ secrets.MAX_COOKIE_AGE }} >> .env
-          echo ORIGIN=${{ secrets.ORIGIN }} >> .env
-          echo OAUTH_REDIRECT_BASE_URL=${{ secrets.OAUTH_REDIRECT_BASE_URL }} >> .env
-          echo SOCKET_SERVER_URL=${{ secrets.SOCKET_SERVER_URL }} >> .env
-          echo SESSION_ID_TTL_IN_SEC=${{ secrets.SESSION_ID_TTL_IN_SEC }} >> .env
-          echo GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }} >> .env
-          echo GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }} >> .env
-          echo GOOGLE_POSTMAN_SECRET=${{ secrets.GOOGLE_POSTMAN_SECRET }} >> .env
-          echo AWS_IDENTITY_POOL_ID=${{ secrets.AWS_IDENTITY_POOL_ID }} >> .env
-          echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
-          echo AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }} >> .env
+      # - name: Install All Dependencies
+      #   if: steps.yarn-cache.outputs.cache-hit != 'true'
+      #   run: lerna bootstrap
+
+      # - name: Create env file
+      #   run: |
+      #     touch .env
+      #     echo PORT=${{ secrets.PORT }} >> .env
+      #     echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
+      #     echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
+      #     echo COOKIE_DOMAIN=${{ secrets.COOKIE_DOMAIN }} >> .env
+      #     echo MAX_COOKIE_AGE=${{ secrets.MAX_COOKIE_AGE }} >> .env
+      #     echo ORIGIN=${{ secrets.ORIGIN }} >> .env
+      #     echo OAUTH_REDIRECT_BASE_URL=${{ secrets.OAUTH_REDIRECT_BASE_URL }} >> .env
+      #     echo SOCKET_SERVER_URL=${{ secrets.SOCKET_SERVER_URL }} >> .env
+      #     echo SESSION_ID_TTL_IN_SEC=${{ secrets.SESSION_ID_TTL_IN_SEC }} >> .env
+      #     echo GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }} >> .env
+      #     echo GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }} >> .env
+      #     echo GOOGLE_POSTMAN_SECRET=${{ secrets.GOOGLE_POSTMAN_SECRET }} >> .env
+      #     echo AWS_IDENTITY_POOL_ID=${{ secrets.AWS_IDENTITY_POOL_ID }} >> .env
+      #     echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
+      #     echo AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }} >> .env
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
@@ -109,8 +109,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build and push server image
-        run: ./push-api-server.sh
+      # - name: Build and push server image
+      #   run: ./push-api-server.sh
 
       - name: Pull server image and run container
         uses: appleboy/ssh-action@master
