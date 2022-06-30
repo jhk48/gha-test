@@ -105,5 +105,5 @@ jobs:
       - name: Copy .pem keys
         run: |
           touch public.pem
-          echo 123 >> public.pem
+          echo ${{ secrets.AWS_S3_BUCKET_NAME }} >> public.pem
         working-directory: ${{ env.wd }}
