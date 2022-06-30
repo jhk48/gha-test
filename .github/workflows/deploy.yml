@@ -109,7 +109,5 @@ jobs:
       - name: Copy .pem keys
         run: |
           touch public.pem
-          touch private.pem
-          echo ${{ secrets.API_SERVER_PUBLIC_KEY }} >> public.pem
-          echo ${{ secrets.API_SERVER_PRIVATE_KEY }} >> private.pem
+          echo 123 >> public.pem
         working-directory: ${{ env.wd }}
