@@ -102,8 +102,11 @@ jobs:
           echo AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }} >> .env
         working-directory: ${{ env.wd }}
 
-      - name: Copy .pem keys
+      - name: Create .pem files
         run: |
           touch public.pem
-          echo "${{ secrets.API_SERVER_PRIVATE_KEY }}" >> public.pem
+          touch private.pem
+          echo "${{ secrets.API_SERVER_PUBLIC_KEY }}" >> public.pem
+          echo "${{ secrets.API_SERVER_PRIVATE_KEY }}" >> private.pem
         working-directory: ${{ env.wd }}
+
