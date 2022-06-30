@@ -53,14 +53,16 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          aws cloudfront create-invalidation --distribution-id="${{ secrets.CLOUDFRONT_ID }}" --paths="/*"
-          aws s3 cp dist s3://${{ secrets.WEBAPP_BUCKET_NAME }} --recursive --exclude="*" --include="*.html" --cache-control="no-store,no-cache"
+          aws cloudfront create-invalidation --distribution-id="${{ secrets.CLOUDFRONT_ID }}" --paths="/index.html"
+          aws s3 cp dist s3://${{ secrets.WEBAPP_BUCKET_NAME }} --recursive --exclude="*" --include="*.html" --cache-control="s-maxage=31536000, max-age=0"
           aws s3 cp dist s3://${{ secrets.WEBAPP_BUCKET_NAME }} --recursive --exclude="*.html" --cache-control="max-age=31536000"
         working-directory: ${{ env.wd }}
 
   deploy_api_server:
     if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'backend')
     runs-on: ubuntu-latest
+    env:
+      wd: ./packages/server
 
     steps:
       - name: Checkout source code
@@ -102,20 +104,12 @@ jobs:
           echo AWS_IDENTITY_POOL_ID=${{ secrets.AWS_IDENTITY_POOL_ID }} >> .env
           echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
           echo AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }} >> .env
+        working-directory: ${{ env.wd }}
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Build and push server image
-        run: ./push-api-server.sh
-
-      - name: Pull server image and run container
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: sudo ./run-server.sh ${{ steps.vars.outputs.short_commit_hash }}
+      - name: Copy .pem keys
+        run: |
+          touch public.pem
+          touch private.pem
+          echo ${{ secrets.API_SERVER_PUBLIC_KEY }} >> public.pem
+          echo ${{ secrets.API_SERVER_PRIVATE_KEY }} >> private.pem
+        working-directory: ${{ env.wd }}
