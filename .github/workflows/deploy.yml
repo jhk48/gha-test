@@ -82,10 +82,6 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Install All Dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: lerna bootstrap
-
       - name: Create env file
         run: |
           touch .env
