@@ -1,4 +1,5 @@
 import { Response, CookieOptions } from 'express';
+import envConfig from '@config';
 
 interface IssueCookieArgs {
 	res: Response;
@@ -9,6 +10,7 @@ interface IssueCookieArgs {
 
 export default function issueCookie({ res, name, value, options }: IssueCookieArgs) {
 	res.cookie(name, value, {
+		domain: envConfig.cookieDomain,
 		httpOnly: true,
 		sameSite: 'strict',
 		secure: true,

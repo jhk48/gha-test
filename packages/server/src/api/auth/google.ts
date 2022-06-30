@@ -42,6 +42,12 @@ export default (): express.Router => {
 				});
 				cookieService.issueCookie({
 					res,
+					name: 'ust',
+					value: 'y',
+					options: { httpOnly: false, maxAge: Number(envConfig.maxCookieAge ?? 0) }
+				});
+				cookieService.issueCookie({
+					res,
 					name: 'login_token',
 					value: sessionId
 				});
@@ -55,6 +61,12 @@ export default (): express.Router => {
 				name: 'uaat',
 				value: sessionId,
 				options: { maxAge: Number(envConfig.maxCookieAge ?? 0) }
+			});
+			cookieService.issueCookie({
+				res,
+				name: 'ust',
+				value: 'y',
+				options: { httpOnly: false, maxAge: Number(envConfig.maxCookieAge ?? 0) }
 			});
 			cookieService.issueCookie({
 				res,
