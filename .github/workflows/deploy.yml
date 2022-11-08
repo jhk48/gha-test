@@ -3,6 +3,9 @@ name: Deploy application
 on:
   push
 
+env:
+  SOMETHING: cool
+
 jobs:
   deploy_api_server:
     runs-on: ubuntu-latest
