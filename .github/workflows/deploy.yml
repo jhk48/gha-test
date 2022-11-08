@@ -17,6 +17,9 @@ jobs:
         id: vars
         run: echo "::set-output name=short_commit_hash::$(git rev-parse --short HEAD)"
 
+      - name: Get release version
+        run: echo "DEPLOY_VERSION=v$(cat ./lerna.json | jq -r '.version')" >> GITHUB_ENV
+
       - name: Install lerna
         run: yarn global add lerna
 
