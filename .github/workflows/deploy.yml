@@ -25,7 +25,7 @@ jobs:
         id: check-i18n-assets
         uses: andstor/file-existence-action@v2
         with:
-          files: "./webapp/src/App.tsx"
+          files: "/webapp/src/App.tsx"
 
       - name: Deploy i18n asset files
         if: steps.check-i18n-assets.outputs.files_exists == 'true'
