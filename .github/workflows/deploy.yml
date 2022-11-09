@@ -5,6 +5,7 @@ on:
 
 env:
   SOMETHING: cool
+  I18N_ASSET_DIRECTORY: i18n-assets
 
 jobs:
   deploy_api_server:
@@ -24,7 +25,7 @@ jobs:
       - name: Check i18n asset file existence
         id: check-i18n-assets
         run: |
-          if [ -f i18n-assets/**/common-web.json ]; then
+          if [ -f ${{ env.I18N_ASSET_DIRECTORY }}/**/common-web.json ]; then
             echo "I18N_ASSET_EXISTS=true" >> $GITHUB_ENV
           fi
         
@@ -35,5 +36,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
           AWS_REGION: ap-northeast-2
         run: |
-          aws s3 cp i18n-assets s3://ronnie.test/locales/${{ env.DEPLOY_VERSION }} --recursive
+          aws s3 cp ${{ env.I18N_ASSET_DIRECTORY }} s3://ronnie.test/locales/${{ env.DEPLOY_VERSION }} --recursive
 
