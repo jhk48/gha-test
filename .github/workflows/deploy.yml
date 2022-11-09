@@ -23,11 +23,15 @@ jobs:
       
       - name: Check i18n asset file existence
         id: check-i18n-assets
-        uses: andstor/file-existence-action@v2
-        with:
-          files: "/webapp/src/App.tsx"
-
+        run: |
+          if i18n-assets; then
+            echo "true"
+          else
+            echo "false"
+          fi
+        
       - name: Deploy i18n asset files
+        if: steps.check-i18n-assets.outputs == 'true'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
