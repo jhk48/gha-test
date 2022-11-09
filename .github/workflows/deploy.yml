@@ -6,6 +6,7 @@ on:
 env:
   SOMETHING: cool
   I18N_ASSET_DIRECTORY: i18n-assets
+  I18N_ASSET_FILE_NAME: common-web.json
 
 jobs:
   deploy_api_server:
@@ -25,7 +26,7 @@ jobs:
       - name: Check i18n asset file existence
         id: check-i18n-assets
         run: |
-          if [ -f ${{ env.I18N_ASSET_DIRECTORY }}/**/common-web.json ]; then
+          if [ -f ${{ env.I18N_ASSET_DIRECTORY }}/**/${{ env.I18N_ASSET_FILE_NAME }} ]; then
             echo "I18N_ASSET_EXISTS=true" >> $GITHUB_ENV
           fi
         
