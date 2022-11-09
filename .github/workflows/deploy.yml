@@ -9,8 +9,6 @@ env:
 jobs:
   deploy_api_server:
     runs-on: ubuntu-latest
-    env:
-      wd: ./packages/server
 
     steps:
       - name: Checkout source code
@@ -22,16 +20,6 @@ jobs:
 
       - name: Get release version
         run: echo "DEPLOY_VERSION=v$(cat ./lerna.json | jq -r '.version')" >> $GITHUB_ENV
-
-      - name: Install lerna
-        run: yarn global add lerna
-
-      - name: Cache node modules
-        uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       
       - name: Check i18n asset file existence
         id: check-i18n-assets
@@ -47,32 +35,4 @@ jobs:
           AWS_REGION: ap-northeast-2
         run: |
           aws s3 cp i18n-assets s3://ronnie.test/locales/${{ env.DEPLOY_VERSION }} --recursive
-
-      - name: Create env file
-        run: |
-          touch .env
-          echo PORT=${{ secrets.PORT }} >> .env
-          echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
-          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
-          echo COOKIE_DOMAIN=${{ secrets.COOKIE_DOMAIN }} >> .env
-          echo MAX_COOKIE_AGE=${{ secrets.MAX_COOKIE_AGE }} >> .env
-          echo ORIGIN=${{ secrets.ORIGIN }} >> .env
-          echo OAUTH_REDIRECT_BASE_URL=${{ secrets.OAUTH_REDIRECT_BASE_URL }} >> .env
-          echo SOCKET_SERVER_URL=${{ secrets.SOCKET_SERVER_URL }} >> .env
-          echo SESSION_ID_TTL_IN_SEC=${{ secrets.SESSION_ID_TTL_IN_SEC }} >> .env
-          echo GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }} >> .env
-          echo GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }} >> .env
-          echo GOOGLE_POSTMAN_SECRET=${{ secrets.GOOGLE_POSTMAN_SECRET }} >> .env
-          echo AWS_IDENTITY_POOL_ID=${{ secrets.AWS_IDENTITY_POOL_ID }} >> .env
-          echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
-          echo AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }} >> .env
-        working-directory: ${{ env.wd }}
-
-      - name: Create .pem files
-        run: |
-          touch public.pem
-          touch private.pem
-          echo "${{ secrets.API_SERVER_PUBLIC_KEY }}" >> public.pem
-          echo "${{ secrets.API_SERVER_PRIVATE_KEY }}" >> private.pem
-        working-directory: ${{ env.wd }}
 
