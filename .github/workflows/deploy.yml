@@ -24,7 +24,7 @@ jobs:
       - name: Check i18n asset file existence
         id: check-i18n-assets
         run: |
-          if [ -d i18n-assets ]; then
+          if [ -f i18n-assets/**/common-web.json ]; then
             echo "I18N_ASSET_EXISTS=true" >> $GITHUB_ENV
           fi
         
