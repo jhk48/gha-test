@@ -28,7 +28,6 @@ jobs:
           files: "/webapp/src/App.tsx"
 
       - name: Deploy i18n asset files
-        if: steps.check-i18n-assets.outputs.files_exists == 'true'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
