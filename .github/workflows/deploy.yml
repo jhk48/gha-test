@@ -24,7 +24,7 @@ jobs:
       - name: Check i18n asset file existence
         id: check-i18n-assets
         run: |
-          if i18n-assets; then
+          if [ -d i18n-assets ]; then
             echo "true"
           else
             echo "false"
