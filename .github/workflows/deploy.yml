@@ -33,11 +33,11 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       
-      - name: Check the existence of i18n asset directory
-        id: check-i18n-directory
+      - name: Check i18n asset file existence
+        id: check-i18n-assets
         uses: andstor/file-existence-action@v2
         with:
-          files: "i18-assets/"
+          files: "i18-assets/**/common-web.json"
 
       - name: Deploy i18n asset files
         if: steps.check-i18n-directory.outputs.files_exists == 'true'
