@@ -25,7 +25,7 @@ jobs:
         id: check-i18n-assets
         uses: andstor/file-existence-action@v2
         with:
-          files: "i18n-assets/*/common-web.json"
+          files: "i18n-assets/**/common-web.json"
 
       - name: Deploy i18n asset files
         if: steps.check-i18n-assets.outputs.files_exists == 'true'
