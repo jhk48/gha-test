@@ -24,7 +24,7 @@ jobs:
       
       - name: Check i18n asset existence
         run: |
-          if [ d ${{ env.I18N_ASSET_DIRECTORY }} ]; then
+          if [ -d ${{ env.I18N_ASSET_DIRECTORY }} ]; then
             echo "I18N_ASSET_EXISTS=true" >> $GITHUB_ENV
           fi
         
