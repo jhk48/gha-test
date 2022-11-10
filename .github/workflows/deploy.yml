@@ -21,19 +21,14 @@ jobs:
 
       - name: Get release version
         run: echo "DEPLOY_VERSION=v$(cat ./lerna.json | jq -r '.version')" >> $GITHUB_ENV
-      
-      - name: Check i18n asset existence
-        run: |
-          if [ -d ${{ env.I18N_ASSET_DIRECTORY }} ]; then
-            echo "I18N_ASSET_EXISTS=true" >> $GITHUB_ENV
-          fi
         
       - name: Deploy i18n asset files
-        if: env.I18N_ASSET_EXISTS == 'true'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
           AWS_REGION: ap-northeast-2
         run: |
-          aws s3 cp ${{ env.I18N_ASSET_DIRECTORY }} s3://ronnie.test/locales/${{ env.DEPLOY_VERSION }} --recursive
+          if [ -d ${{ env.I18N_ASSET_DIRECTORY }} ]; then
+            aws s3 cp ${{ env.I18N_ASSET_DIRECTORY }} s3://ronnie.test/locales/${{ env.DEPLOY_VERSION }} --recursive
+          fi
 
