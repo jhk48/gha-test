@@ -29,6 +29,6 @@ jobs:
           AWS_REGION: ap-northeast-2
         run: |
           if [ -d ${{ env.I18N_ASSET_DIRECTORY }} ]; then
-            aws s3 sync ${{ env.I18N_ASSET_DIRECTORY }} s3://ronnie.test/locales/${{ env.DEPLOY_VERSION }} --exclude
+            aws s3 sync ${{ env.I18N_ASSET_DIRECTORY }} s3://ronnie.test/locales/${{ env.DEPLOY_VERSION }} --delete
           fi
 
