@@ -42,4 +42,4 @@ jobs:
           git config --global user.name "GitHub Actions"
           git add CHANGELOG.md
           git commit -m "Update CHANGELOG.md with PRs in milestone $MILESTONE_TITLE"
-          git push "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:${{ github.event.pull_request.head.ref }}
+          git push
