@@ -7,16 +7,16 @@ on:
       - labeled
 
 env:
-  TRIGGER_LABEL: 'release'
+  TRIGGER_LABEL: "release"
 
 jobs:
   update_changelog:
     runs-on: ubuntu-latest
     if: >-
       (github.event.action == 'opened' &&
-      contains(github.event.pull_request.labels.*.name, env.TRIGGER_LABEL)) ||
+      contains(github.event.pull_request.labels.*.name, ${{ env.TRIGGER_LABEL }})) ||
       (github.event.action == 'labeled' &&
-      github.event.label.name == env.TRIGGER_LABEL)
+      github.event.label.name == ${{ env.TRIGGER_LABEL }})
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
