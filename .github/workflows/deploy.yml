@@ -6,12 +6,11 @@ on:
       - opened
       - labeled
 
-env:
-  TRIGGER_LABEL: release # Replace with your desired label
-
 jobs:
   update_changelog:
     runs-on: ubuntu-latest
+      env:
+        TRIGGER_LABEL: release
     if: >-
       (github.event.action == 'opened' &&
       contains(github.event.pull_request.labels.*.name, env.TRIGGER_LABEL)) ||
