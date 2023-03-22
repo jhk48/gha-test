@@ -38,7 +38,7 @@ jobs:
           echo -e "\n## $MILESTONE_TITLE\n" >> CHANGELOG.md
           for pr in "${prs_in_milestone[@]}"
           do
-            echo "$pr" >> CHANGELOG.md
+            echo $pr >> CHANGELOG.md
           done
 
       - name: Commit and push changes
