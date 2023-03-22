@@ -1,38 +1,68 @@
-name: List PRs in a specific milestone
+name: Update CHANGELOG with PRs in milestone
 
 on:
   pull_request:
     types:
       - opened
+      - labeled
+
+env:
+  TRIGGER_LABEL: release # Replace with your desired label
 
 jobs:
-  list_prs:
+  update_changelog:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.title == 'My Special PR' # Replace with your desired PR title
-
+    if: >-
+      (github.event.action == 'opened' &&
+      contains(github.event.pull_request.labels.*.name, env.TRIGGER_LABEL)) ||
+      (github.event.action == 'labeled' &&
+      github.event.label.name == env.TRIGGER_LABEL)
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+        fetch-depth: 0
 
     - name: Install jq
       run: |
         sudo apt-get update
         sudo apt-get install jq
 
+    - name: Extract milestone title from branch name
+      run: |
+        milestone_title=$(echo "${{ github.event.pull_request.base.ref }}" | sed -E 's/^release\/(.*)/\1/')
+        echo "MILESTONE_TITLE=$milestone_title" >> $GITHUB_ENV
+
     - name: Fetch milestone number
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        MILESTONE_TITLE: 'Your Milestone Title' # Replace with your milestone title
       run: |
         response=$(curl -s -H "Accept: application/vnd.github+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$GITHUB_REPOSITORY/milestones")
         milestone_number=$(echo "$response" | jq ".[] | select(.title == \"$MILESTONE_TITLE\") | .number")
         echo "MILESTONE_NUMBER=$milestone_number" >> $GITHUB_ENV
 
-    - name: Fetch PRs in milestone
+    - name: Fetch PRs in milestone and update CHANGELOG.md
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         response=$(curl -s -H "Accept: application/vnd.github+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$GITHUB_REPOSITORY/pulls?state=all&per_page=100")
-        prs_in_milestone=$(echo "$response" | jq ".[] | select(.milestone.number == $MILESTONE_NUMBER) | {number: .number, title: .title, url: .html_url}")
+        prs_in_milestone=$(echo "$response" | jq ".[] | select(.milestone.number == $MILESTONE_NUMBER) | \"- [\(.title)](\(.html_url))\"")
         echo "PRs in milestone $MILESTONE_TITLE:"
         echo "$prs_in_milestone"
+
+        echo -e "\n## $MILESTONE_TITLE\n" >> CHANGELOG.md
+        for pr in "${prs_in_milestone[@]}"
+        do
+          echo "$pr" | sed 's/^"//' | sed 's/"$//' >> CHANGELOG.md
+        done
+
+    - name: Commit and push changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+        git add CHANGELOG.md
+        git commit -m "Update CHANGELOG.md with PRs in milestone $MILESTONE_TITLE"
+        git push "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:${{ github.event.pull_request.head.ref }}
