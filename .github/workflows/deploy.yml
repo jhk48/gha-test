@@ -36,10 +36,7 @@ jobs:
           prs_in_milestone=$(echo "$response" | jq '.items[] | select(.state == "open" and (.labels | map(select(.name == "release")) | length == 0)) | "- \(.title) [#\(.number)](\(.html_url))"')
 
           echo -e "\n## $MILESTONE_TITLE\n" >> CHANGELOG.md
-          for pr in "${prs_in_milestone[@]}"
-          do
-            printf '%s\n' "$(echo "$pr" | sed 's/^"\|"$//g')" >> CHANGELOG.md
-          done
+          cat <(for pr in "${prs_in_milestone[@]}"; do printf '%s\n' "$(echo "$pr" | sed 's/^"\|"$//g')"; done) CHANGELOG.md > tmp && mv tmp CHANGELOG.md
 
       - name: Commit and push changes
         env:
