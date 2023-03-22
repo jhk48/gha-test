@@ -24,8 +24,8 @@ jobs:
 
       - name: Extract milestone title from branch name
         run: |
-          milestone_title=$(echo "${{ github.event.pull_request.base.ref }}" | sed -E 's/^release\/(.*)/\1/')
-          echo ${{ github.event.pull_request.base }}
+          milestone_title=$(echo "${{ github.event.pull_request.head.ref }}" | sed -E 's/^release\/(.*)/\1/')
+          echo ${{ github.event.pull_request.head.ref }}
           echo "MILESTONE_TITLE=$milestone_title" >> $GITHUB_ENV
 
       - name: Fetch PRs in milestone and update CHANGELOG.md
