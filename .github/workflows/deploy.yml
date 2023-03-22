@@ -6,13 +6,10 @@ on:
       - opened
       - labeled
 
-env:
-  TRIGGER_LABEL: "release"
-
 jobs:
   update_changelog:
     runs-on: ubuntu-latest
-    if: ${{ github.event.label.name == env.TRIGGER_LABEL }}
+    if: ${{ github.event.label.name == 'release' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
