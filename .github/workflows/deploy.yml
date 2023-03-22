@@ -1,34 +1,38 @@
-name: Deploy application
+name: List PRs in a specific milestone
 
 on:
-  push
-
-env:
-  SOMETHING: cool
-  I18N_ASSET_DIRECTORY: i18n-assets
+  pull_request:
+    types:
+      - opened
 
 jobs:
-  deploy_api_server:
+  list_prs:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.title == 'My Special PR' # Replace with your desired PR title
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set short commit hash
-        id: vars
-        run: echo "::set-output name=short_commit_hash::$(git rev-parse --short HEAD)"
+    - name: Install jq
+      run: |
+        sudo apt-get update
+        sudo apt-get install jq
 
-      - name: Get release version
-        run: echo "DEPLOY_VERSION=v$(cat ./lerna.json | jq -r '.version')" >> $GITHUB_ENV
-        
-      - name: Deploy i18n asset files
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
-          AWS_REGION: ap-northeast-2
-        run: |
-          if [ -d ${{ env.I18N_ASSET_DIRECTORY }} ]; then
-            aws s3 sync ${{ env.I18N_ASSET_DIRECTORY }} s3://ronnie.test/locales/${{ env.DEPLOY_VERSION }} --delete
-          fi
+    - name: Fetch milestone number
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        MILESTONE_TITLE: 'Your Milestone Title' # Replace with your milestone title
+      run: |
+        response=$(curl -s -H "Accept: application/vnd.github+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$GITHUB_REPOSITORY/milestones")
+        milestone_number=$(echo "$response" | jq ".[] | select(.title == \"$MILESTONE_TITLE\") | .number")
+        echo "MILESTONE_NUMBER=$milestone_number" >> $GITHUB_ENV
 
+    - name: Fetch PRs in milestone
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        response=$(curl -s -H "Accept: application/vnd.github+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$GITHUB_REPOSITORY/pulls?state=all&per_page=100")
+        prs_in_milestone=$(echo "$response" | jq ".[] | select(.milestone.number == $MILESTONE_NUMBER) | {number: .number, title: .title, url: .html_url}")
+        echo "PRs in milestone $MILESTONE_TITLE:"
+        echo "$prs_in_milestone"
