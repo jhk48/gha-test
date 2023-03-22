@@ -41,6 +41,8 @@ jobs:
             printf '%s\n' "$(echo "$pr" | sed 's/^"\|"$//g')" >> output.md
           done
 
+          sed -i '3 r output.md' CHANGELOG.md
+
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
