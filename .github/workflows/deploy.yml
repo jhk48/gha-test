@@ -12,7 +12,7 @@ env:
 jobs:
   update_changelog:
     runs-on: ubuntu-latest
-    if: ${{ github.event.label.name === env.TRIGGER_LABEL }}
+    if: ${{ github.event.label.name == env.TRIGGER_LABEL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
