@@ -36,6 +36,12 @@ jobs:
           prs_in_milestone=$(echo "$response" | jq -r '.items[] | select(.state == "open") | "- \(.title) \(.url)"')
           echo $prs_in_milestone >> CHANGELOG.md
 
+          echo -e "\n## $MILESTONE_TITLE\n" >> CHANGELOG.md
+          for pr in "${prs_in_milestone[@]}"
+          do
+            echo "$pr" | sed 's/^"//' | sed 's/"$//' >> CHANGELOG.md
+          done
+
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
