@@ -38,7 +38,7 @@ jobs:
           echo -e "\n## $MILESTONE_TITLE\n" >> CHANGELOG.md
           for pr in "${prs_in_milestone[@]}"
           do
-            echo $pr | sed 's/^"\|"$//g' | echo -e "$(cat -)\n"
+            echo $pr | sed 's/^"\|"$//g' | echo -e "$(cat -)\n" >> CHANGELOG.md
           done
 
       - name: Commit and push changes
