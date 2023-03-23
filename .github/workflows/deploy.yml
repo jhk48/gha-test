@@ -44,11 +44,13 @@ jobs:
               ]
             }' 
           )
-          changelog_content=$(echo $response | jq -r '.choices[].message.content')
+          changelog_content=$(echo $response | jq -r '.choices[].text')
+          
           printf '\n%s\n\n' "## $MILESTONE_TITLE" >> changelog_tmp.md
-          printf '%s\n' "$(echo "$changelog_content" | sed 's/^"\|"$//g')" >> changelog_tmp.md
-
-          sed -i '/^# CHANGELOG/ r changelog_tmp.md' CHANGELOG.md
+          echo -e "$changelog_content" >> changelog_tmp.md
+          
+          awk '/^# CHANGELOG/ {print; system("cat changelog_tmp.md"); next}1' CHANGELOG.md > temp
+          mv temp CHANGELOG.md
           rm changelog_tmp.md
 
       - name: Commit and push changes
