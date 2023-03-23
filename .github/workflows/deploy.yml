@@ -59,7 +59,7 @@ jobs:
                 }
               ]
             }' 
-          | jq)
+          )
 
           echo response
 
