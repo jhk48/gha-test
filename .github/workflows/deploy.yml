@@ -40,7 +40,7 @@ jobs:
             printf '%s\n' "$(echo "$pr" | sed 's/^"\|"$//g')" >> output.md
           done
 
-          cat output.md >> CHANGELOG.md
+          sed -i '/^# CHANGELOG/ r output.md' CHANGELOG.md
           rm output.md
 
       - name: Commit and push changes
@@ -49,6 +49,6 @@ jobs:
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          git add output.md
+          git add CHANGELOG.md
           git commit -m "Update CHANGELOG.md with PRs in milestone $MILESTONE_TITLE"
           git push
