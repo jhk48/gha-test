@@ -3,7 +3,6 @@ name: Update CHANGELOG with PRs in milestone
 on:
   pull_request:
     types:
-      - opened
       - labeled
 
 jobs:
