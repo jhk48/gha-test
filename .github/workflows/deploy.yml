@@ -43,6 +43,26 @@ jobs:
           sed -i '/^# CHANGELOG/ r changelog_tmp.md' CHANGELOG.md
           rm changelog_tmp.md
 
+      - name: Request ChatGPT to write down CHANGELOG content
+        env:
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+        run: |
+          response=$(curl -X POST https://api.openai.com/v1/chat/completions \
+           -H "Content-Type: application/json" \ 
+           -H "Authorization: Bearer $OPENAI_KEY" \
+           -d '{
+              "model": "gpt-3.5-turbo",
+              "messages": [
+                { 
+                  "role": "user",
+                  "content": "Please write down a markdown content based on this data\n```\n{\n  \"title\": \"2313\",\n  \"number\": 133,\n  \"url\": \"https://github.com/jaehyeon48/github-actions-test/pull/133\",\n  \"package\": \"app-installation-1\"\n}\n{\n  \"title\": \"merge test\",\n  \"number\": 112,\n  \"url\": \"https://github.com/jaehyeon48/github-actions-test/pull/112\",\n  \"package\": \"reivews\"\n}\n```\nin the format like this\n```\n### package\n\n- title [#number](url)\n```"
+                }
+              ]
+            }' 
+          | jq)
+
+          echo response
+
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
