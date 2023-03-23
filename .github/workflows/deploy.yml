@@ -44,6 +44,8 @@ jobs:
           sed -i '/^# CHANGELOG/ r output.md' CHANGELOG.md
           rm output.md
 
+          sed -i '2i\ content content content' CHANGELOG.md
+
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
