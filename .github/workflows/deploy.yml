@@ -46,7 +46,7 @@ jobs:
           )
           changelog_content=$(echo $response | jq -r '.choices[].message.content')
           
-          printf '\n%s\n' "## $MILESTONE_TITLE" >> changelog_tmp.md
+          printf '\n%s' "## $MILESTONE_TITLE" >> changelog_tmp.md
           echo -e "$changelog_content" >> changelog_tmp.md
           
           awk '/^# CHANGELOG/ {print; system("cat changelog_tmp.md"); next}1' CHANGELOG.md > temp
