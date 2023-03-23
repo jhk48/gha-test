@@ -41,7 +41,8 @@ jobs:
             printf '%s\n' "$(echo "$pr" | sed 's/^"\|"$//g')" >> output.md
           done
 
-          sed -i '3 r output.md' CHANGELOG.md
+          sed -i '3r output.md' CHANGELOG.md
+          rm output.md
 
       - name: Commit and push changes
         env:
