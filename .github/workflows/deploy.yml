@@ -44,7 +44,7 @@ jobs:
               ]
             }' 
           )
-          changelog_content=$(echo $response | jq -r '.choices[].text')
+          changelog_content=$(echo $response | jq -r '.choices[].message.content')
           
           printf '\n%s\n\n' "## $MILESTONE_TITLE" >> changelog_tmp.md
           echo -e "$changelog_content" >> changelog_tmp.md
