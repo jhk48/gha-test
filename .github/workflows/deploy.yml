@@ -60,8 +60,9 @@ jobs:
               ]
             }' 
           )
+          changelog_content=$(echo $response | jq)
 
-          echo $response
+          echo $changelog_content
 
       - name: Commit and push changes
         env:
