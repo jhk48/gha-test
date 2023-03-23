@@ -61,7 +61,7 @@ jobs:
             }' 
           )
 
-          echo response
+          echo $response
 
       - name: Commit and push changes
         env:
