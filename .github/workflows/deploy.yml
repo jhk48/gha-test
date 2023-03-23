@@ -39,7 +39,7 @@ jobs:
               "messages": [
                 { 
                   "role": "user",
-                  "content": "Please write down a markdown content based on this data\n```\n{\n  \"title\": \"2313\",\n  \"number\": 133,\n  \"url\": \"https://github.com/jaehyeon48/github-actions-test/pull/133\",\n  \"package\": \"app-installation-1\"\n}\n{\n  \"title\": \"merge test\",\n  \"number\": 112,\n  \"url\": \"https://github.com/jaehyeon48/github-actions-test/pull/112\",\n  \"package\": \"reivews\"\n}\n{\n  \"title\": \"안녕안녕안녕 12321312\",\n  \"number\": 145,\n  \"url\": \"https://github.com/jaehyeon48/github-actions-test/pull/145\",\n  \"package\": \"app-installation-1\"\n}\n```\nin the format like this\n```\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n```"
+                  "content": "Please write down a markdown content based on this data\n```$response```\nin the format like this\n```\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n```"
                 }
               ]
             }' 
