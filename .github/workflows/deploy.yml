@@ -31,7 +31,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -e
           response=$(curl -s -H "Accept: application/vnd.github+json" -H "Authorization: token $" "https://api.github.com/search/issues?q=milestone:v13.1.2+type:pr+repo:$GITHUB_REPOSITORY")
           prs_in_milestone=$(echo "$response" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring | sed 's/^"//;s/"$//')
           echo "CHAT_GPT_CONTENT=$(echo Please write down a markdown content based on this data\\n $prs_in_milestone \\nin the following format, but with the title name of common coming first, followed by the alphabetically sorted packages and then the pull requests with higher numbers appearing first\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n### other package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n)" >> $GITHUB_ENV
@@ -64,6 +63,7 @@ jobs:
           awk '/^# CHANGELOG/ {print; system("cat changelog_tmp.md"); next}1' CHANGELOG.md > temp
           mv temp CHANGELOG.md
           rm changelog_tmp.md
+        if: ${{ success() }}
 
       - name: Commit and push changes
         env:
