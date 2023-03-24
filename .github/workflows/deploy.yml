@@ -39,7 +39,6 @@ jobs:
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
         run: |
-          PRS=$(${{ env.PRS_IN_MILESTONE }} | jq -c -s 'split("\n")[:-1] | map(fromjson)')
           response=$(curl -X POST https://api.openai.com/v1/chat/completions \
            -H "Content-Type: application/json" \
            -H "Authorization: Bearer $OPENAI_KEY" \
@@ -48,7 +47,7 @@ jobs:
               "messages": [
                 { 
                   "role": "user",
-                  "content": "Please write down a markdown content based on this data\n ${{ env.PRS_IN_MILESTONE }} \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n"
+                  "content": "Please write down a markdown content based on this data\n ${{ trim(env.PRS_IN_MILESTONE, '"') }} \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n"
                 }
               ]
             }' 
@@ -59,7 +58,7 @@ jobs:
               "messages": [
                 { 
                   "role": "user",
-                  "content": "Please write down a markdown content based on this data\n $PRS \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n"
+                  "content": "Please write down a markdown content based on this data\n ${{ trim(env.PRS_IN_MILESTONE, '"') }} \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n"
                 }
               ]
             }' 
