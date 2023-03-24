@@ -20,14 +20,16 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
+      - name: test
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github.event.pull_request.milestone) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+
       - name: Install jq
         run: |
           sudo apt-get update
           sudo apt-get install jq
-
-      - name: test
-        run: |
-          echo ${{ github.event.pull_request.milestone }} | jq
 
       - name: Extract current version from branch name
         run: |
