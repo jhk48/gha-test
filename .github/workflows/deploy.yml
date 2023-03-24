@@ -35,3 +35,9 @@ jobs:
           prs_in_milestone=$(echo "$response" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring)
           echo "CHAT_GPT_CONTENT=$(echo Please write down a markdown content based on this data\\n $prs_in_milestone \nin the format like this\n### package\n\n- title [#number]\(url\)\n- title [#number]\(url\)\n\n### other package\n\n- title [#number]\(url\)\n- title [#number]\(url\)\n\n)" >> $GITHUB_ENV
           echo $prs_in_milestone
+
+      - name: Request ChatGPT to write down CHANGELOG
+        env:
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+        run: |
+          echo '"${{ env.CHAT_GPT_CONTENT }}"'
