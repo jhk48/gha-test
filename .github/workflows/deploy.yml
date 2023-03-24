@@ -39,7 +39,8 @@ jobs:
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
         run: |
-          echo "PR_LIST=$PRS_IN_MILESTONE | tr -d '"'" >> $GITHUB_ENV 
+          echo "PR_LIST=$PRS_IN_MILESTONE | tr -d '"'" >> $GITHUB_ENV
+          echo "GPT_CONTENT=Please write down a markdown content based on this data\n ${{ env.PR_LIST }} \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n" >> $GITHUB_ENV
           response=$(curl -X POST https://api.openai.com/v1/chat/completions \
            -H "Content-Type: application/json" \
            -H "Authorization: Bearer $OPENAI_KEY" \
@@ -48,7 +49,7 @@ jobs:
               "messages": [
                 { 
                   "role": "user",
-                  "content": "Please write down a markdown content based on this data\n ${{ env.PR_LIST }} \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n"
+                  "content": ${{ env.GPT_CONTENT }}
                 }
               ]
             }' 
