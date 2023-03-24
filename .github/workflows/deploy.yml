@@ -35,7 +35,7 @@ jobs:
           prs_in_milestone=$(echo "$response" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring | sed 's/^"//;s/"$//')
           if [[ $prs_in_milestone == [] ]]; then
             exit 1
-          endif;
+          fi;
 
           echo "CHAT_GPT_CONTENT=$(echo Please write down a markdown content based on this data\\n $prs_in_milestone \\nin the following format, but with the title name of common coming first, followed by the alphabetically sorted packages and then the pull requests with higher numbers appearing first\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n### other package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n)" >> $GITHUB_ENV
 
