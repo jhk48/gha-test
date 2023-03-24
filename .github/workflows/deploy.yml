@@ -8,7 +8,6 @@ on:
 env:
   COMMIT_USER_EMAIL: developer@triple-corp.com
   COMMIT_USER_NAME: triple-frontend[bot]
-  CURRENT_VERSION: ${{ github.event.pull_request.milestone.title }}
 
 jobs:
   update_changelog:
@@ -25,7 +24,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install jq
-          echo ${{ env.CURRENT_VERSION }}
+
+      - name: Get the current version
+        run: |
+          CURRENT_VERSION=${{ github.event.pull_request.milestone.title }}
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
 
       - name: Fetch PRs in current version's milestone and write a question to ChatGPT
         run: |
@@ -43,6 +46,7 @@ jobs:
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
         run: |
+          echo ${{ env.CURRENT_VERSION }}
           RESPONSE=$(curl -X POST https://api.openai.com/v1/chat/completions \
            -H "Content-Type: application/json" \
            -H "Authorization: Bearer $OPENAI_KEY" \
