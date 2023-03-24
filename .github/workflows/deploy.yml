@@ -20,21 +20,14 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
-      - name: test
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github.event.pull_request.milestone) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
-
       - name: Install jq
         run: |
           sudo apt-get update
           sudo apt-get install jq
 
-      - name: Extract current version from branch name
+      - name: Get the current version
         run: |
-          CURRENT_VERSION=$(echo "${{ github.event.pull_request.head.ref }}" | sed -E 's/^release\/(.*)/\1/')
-          echo ${{ github.event.pull_request.head.ref }}
+          CURRENT_VERSION=$(echo "${{ github.event.pull_request.milestone }}" | jq '.title'
           echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
 
       - name: Fetch PRs in current version's milestone and write a question to ChatGPT
