@@ -36,7 +36,7 @@ jobs:
           PRS_IN_MILESTONE=$(echo "$RESPONSE" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring | sed 's/^"//;s/"$//')
 
           echo $PRS_IN_MILESTONE
-          if [ $PRS_IN_MILESTONE == "[]" ]; then
+          if [ $(echo "$PRS_IN_MILESTONE" | jq 'length') -eq 0 ]; then
             echo "Github API 오류이거나, 머지된 PR이 마일스톤에 존재하지 않습니다."
             exit 1
           fi
