@@ -20,6 +20,10 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
+      - name: test
+        run: |
+          echo ${{ github.event.pull_request.milestone }}
+
       - name: Install jq
         run: |
           sudo apt-get update
