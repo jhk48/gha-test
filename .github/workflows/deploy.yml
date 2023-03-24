@@ -39,7 +39,7 @@ jobs:
             exit 1
           fi
 
-          echo "CHAT_GPT_CONTENT=$(echo Please write down a markdown content based on this data\\n $PRS_IN_MILESTONE \\nin the following format, but with the title name of common coming first, followed by the alphabetically sorted packages. and then the pull requests with higher numbers appearing first\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n### other package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n)" >> $GITHUB_ENV
+          echo "CHAT_GPT_CONTENT=$(echo Please write down a markdown content based on this data\\n $PRS_IN_MILESTONE \\nin the following format, but with the title name of common coming first, followed by the alphabetically sorted packages. And then, list pull requests with higher numbers appearing first\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n### other package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n)" >> $GITHUB_ENV
 
       - name: Request ChatGPT to write down CHANGELOG
         env:
