@@ -39,7 +39,7 @@ jobs:
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
         run: |
-          echo "PR_LIST=$PRS_IN_MILESTONE | tr -d '"'" >> $GITHUB_ENV
+          echo "PR_LIST=$PRS_IN_MILESTONE | tr -d '\"'" >> $GITHUB_ENV
           echo "GPT_CONTENT=Please write down a markdown content based on this data\n ${{ env.PR_LIST }} \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n" >> $GITHUB_ENV
 
 
