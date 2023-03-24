@@ -8,6 +8,7 @@ on:
 env:
   COMMIT_USER_EMAIL: developer@triple-corp.com
   COMMIT_USER_NAME: triple-frontend[bot]
+  CURRENT_VERSION: ${{ github.event.pull_request.milestone.title }}
 
 jobs:
   update_changelog:
@@ -31,7 +32,7 @@ jobs:
 
       - name: Fetch PRs in current version's milestone and write a question to ChatGPT
         run: |
-          RESPONSE=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/search/issues?q=milestone:${{ github.event.pull_request.milestone.title }}+type:pr+repo:$GITHUB_REPOSITORY")
+          RESPONSE=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/search/issues?q=milestone:${{ env.CURRENT_VERSION }}+type:pr+repo:$GITHUB_REPOSITORY")
           
           if [[ $(echo "$RESPONSE" | jq '.total_count') == null ]]; then
             echo $RESPONSE | jq '.message'
@@ -63,7 +64,7 @@ jobs:
           echo $RESPONSE | jq
           changelog_content=$(echo $RESPONSE | jq -r '.choices[].message.content')
 
-          printf '\n%s\n\n' "## ${{ github.event.pull_request.milestone.title }}" >> changelog_tmp.md
+          printf '\n%s\n\n' "## ${{ env.CURRENT_VERSION }}" >> changelog_tmp.md
           echo -e "$changelog_content" >> changelog_tmp.md
 
           awk '/^# CHANGELOG/ {print; system("cat changelog_tmp.md"); next}1' CHANGELOG.md > temp
@@ -77,5 +78,5 @@ jobs:
           git config --local user.email "${{ env.COMMIT_USER_EMAIL }}"
           git config --local user.name "${{ env.COMMIT_USER_NAME }}"
           git add CHANGELOG.md
-          git commit -m "Update ${{ github.event.pull_request.milestone.title }} CHANGELOG"
+          git commit -m "Update ${{ env.CURRENT_VERSION }} CHANGELOG"
           git push
