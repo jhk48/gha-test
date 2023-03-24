@@ -41,16 +41,7 @@ jobs:
         run: |
           PRS=$(echo $PRS_IN_MILESTONE | tr -d '"')
           CONTENT=$(echo "Please write down a markdown content based on this data\n $PRS \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n")
-          C=$(echo {
-              "model": "gpt-3.5-turbo",
-              "messages": [
-                { 
-                  "role": "user",
-                  "content": "Please write down a markdown content based on this data\n $PRS \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n"
-                }
-              ]
-            }
-            )
+  
 
 
           response=$(curl -X POST https://api.openai.com/v1/chat/completions \
