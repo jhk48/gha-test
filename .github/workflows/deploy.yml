@@ -4,6 +4,10 @@ on:
   pull_request:
     types:
       - labeled
+      
+env:
+  COMMIT_USER_EMAIL: developer@triple-corp.com
+  COMMIT_USER_NAME: triple-frontend[bot]
 
 jobs:
   update_changelog:
