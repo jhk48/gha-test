@@ -1,9 +1,5 @@
 # CHANGELOG
 
-### triple-media
-
-- 1 [#202](https://github.com/jaehyeon48/github-actions-test/pull/202)
-
 ## 12.12.2
 
 ### replies
