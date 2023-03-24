@@ -33,20 +33,5 @@ jobs:
         run: |
           response=$(curl -s -H "Accept: application/vnd.github+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/search/issues?q=milestone:v13.1.2+type:pr+repo:$GITHUB_REPOSITORY")
           prs_in_milestone=$(echo "$response" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s)
-          echo "CHAT_GPT_CONTENT=Please write down a markdown content based on this data\n $prs_in_milestone \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n" >> $GITHUB_ENV
+          chat_gpt_content=(echo "Please write down a markdown content based on this data\n $prs_in_milestone \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n")
 
-      - name: Request ChatGPT to write down CHANGELOG content
-        env:
-          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-        run: |
-          echo ${{ env.CHAT_GPT_CONTENT }}
-         
-      - name: Commit and push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add CHANGELOG.md
-          git commit -m "Update CHANGELOG.md with PRs in milestone $MILESTONE_TITLE"
-          git push
