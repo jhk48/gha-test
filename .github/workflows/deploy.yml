@@ -34,7 +34,7 @@ jobs:
           RESPONSE=$(curl -s -H "Accept: application/vnd.github+json" -H "Authorization: token $" "https://api.github.com/search/issues?q=milestone:v13.1.2+type:pr+repo:$GITHUB_REPOSITORY")
 
           PRS_IN_MILESTONE=$(echo "[]")
-          if [ "${#PRS_IN_MILESTONE[@]}" -eq 0 ]; then
+          if [ "${#PRS_IN_MILESTONE[@]}" == [] ]; then
             echo "PRS_IN_MILESTONE is empty"
           else
             echo "PRS_IN_MILESTONE has ${#PRS_IN_MILESTONE[@]} items"
