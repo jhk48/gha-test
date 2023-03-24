@@ -59,7 +59,7 @@ jobs:
            -d '' 
           )
 
-          echo $C
+          echo '"${{ env.PRS_IN_MILESTONE }}"'
 
           echo $response | jq
           changelog_content=$(echo $response | jq -r '.choices[].message.content')
