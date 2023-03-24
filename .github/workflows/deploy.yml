@@ -40,6 +40,7 @@ jobs:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
         run: |
           PRS=$(echo $PRS_IN_MILESTONE | tr -d '"')
+          echo $PRS
           response=$(curl -X POST https://api.openai.com/v1/chat/completions \
            -H "Content-Type: application/json" \
            -H "Authorization: Bearer $OPENAI_KEY" \
