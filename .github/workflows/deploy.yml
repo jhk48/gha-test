@@ -38,7 +38,6 @@ jobs:
       - name: Request ChatGPT to write down CHANGELOG content
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
-          PR_LIST: ${{ env.PRS_IN_MILESTONE }} | tr -d '"'
         run: |
           echo "PR_LIST=$PRS_IN_MILESTONE | tr -d '"'" >> $GITHUB_ENV 
           response=$(curl -X POST https://api.openai.com/v1/chat/completions \
