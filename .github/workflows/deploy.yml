@@ -49,7 +49,7 @@ jobs:
               "messages": [
                 { 
                   "role": "user",
-                  "content": ${{ env.GPT_CONTENT }}
+                  "content": "hey"
                 }
               ]
             }' 
