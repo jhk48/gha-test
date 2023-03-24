@@ -35,7 +35,7 @@ jobs:
           RESPONSE=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/search/issues?q=milestone:v13.1.2+type:pr+repo:$GITHUB_REPOSITORY")
           PRS_IN_MILESTONE=$(echo "$RESPONSE" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring | sed 's/^"//;s/"$//')
 
-          echo "CHAT_GPT_CONTENT=$(echo Please write down a markdown content based on this data\\n $PRS_IN_MILESTONE \\nin the following format:\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n### other package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n but with the title name of common coming first, followed by the alphabetically sorted packages. And then, list titles with lower numbers appearing first") >> $GITHUB_ENV
+          echo "CHAT_GPT_CONTENT=$(echo Please write down a markdown content based on this data\\n $PRS_IN_MILESTONE \\nin the following format:\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n but with the title name of common coming first, followed by the alphabetically sorted packages. And then, list titles with lower numbers appearing first)" >> $GITHUB_ENV
 
       - name: Request ChatGPT to write down CHANGELOG
         env:
