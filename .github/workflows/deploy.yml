@@ -59,10 +59,13 @@ jobs:
               "messages": [
                 { 
                   "role": "user",
-                  "content": "Please write down a markdown content based on this data\n ${{ env.PRS }} \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n"
+                  "content": "Please write down a markdown content based on this data\n $PRS \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n"
                 }
               ]
             }' 
+
+          echo '"$PRS"'
+          echo "$PRS"
           echo $response | jq
           changelog_content=$(echo $response | jq -r '.choices[].message.content')
 
