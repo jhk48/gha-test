@@ -38,6 +38,7 @@ jobs:
           RESPONSE=$(curl -s -H "Accept: application/vnd.github+json" -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/search/issues?q=milestone:v13.1.2+type:pr+repo:$GITHUB_REPOSITORY")
           PRS_IN_MILESTONE=$(echo "$RESPONSE" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring | sed 's/^"//;s/"$//')
 
+          echo $PRS_IN_MILESTONE
           if [ $PRS_IN_MILESTONE == "[]" ]; then
             echo "Github API 오류이거나, 머지된 PR이 마일스톤에 존재하지 않습니다."
             exit 1
