@@ -8,6 +8,7 @@ on:
 env:
   COMMIT_USER_EMAIL: developer@triple-corp.com
   COMMIT_USER_NAME: triple-frontend[bot]
+  CURRENT_VERSION: ${{ github.event.pull_request.milestone.title }}
 
 jobs:
   update_changelog:
@@ -24,11 +25,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install jq
-
-      - name: Get the current version
-        run: |
-          CURRENT_VERSION=$(echo ${{ github.event.pull_request.milestone.title }})
-          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
 
       - name: Fetch PRs in current version's milestone and write a question to ChatGPT
         run: |
