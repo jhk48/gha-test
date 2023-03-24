@@ -27,7 +27,7 @@ jobs:
 
       - name: Test
         run: |
-          echo ${{ github.event.pull_request.milestone.title }}
+          echo ${{ toJson(github.event.milestone) }} | jq
 
       - name: Fetch PRs in current version's milestone and write a question to ChatGPT
         run: |
