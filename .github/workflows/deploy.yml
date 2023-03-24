@@ -27,7 +27,7 @@ jobs:
 
       - name: Get the current version
         run: |
-          CURRENT_VERSION=$(echo "${{ github.event.pull_request.milestone }}" | jq '.title')
+          CURRENT_VERSION=$(echo ${{ github.event.pull_request.milestone.title }})
           echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
 
       - name: Fetch PRs in current version's milestone and write a question to ChatGPT
