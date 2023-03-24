@@ -49,7 +49,7 @@ jobs:
               "messages": [
                 { 
                   "role": "user",
-                  "content": CONTENT
+                  "content": "Please write down a markdown content based on this data\n ${{ env.PRS }} \nin the format like this\n### package\n\n- title [#number](url)\n- title [#number](url)\n\n### other package\n\n- title [#number](url)\n- title [#number](url)\n\n"
                 }
               ]
             }' 
