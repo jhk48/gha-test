@@ -19,22 +19,16 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
-
-      - name: Install jq
-        run: |
-          sudo apt-get update
-          sudo apt-get install jq
 
       - name: Fetch PRs in current version's milestone and write a question to ChatGPT
         run: |
           RESPONSE=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/search/issues?q=milestone:${{ env.CURRENT_VERSION }}+type:pr+repo:$GITHUB_REPOSITORY")
-          
+
           if [[ $(echo "$RESPONSE" | jq '.total_count') == null ]]; then
             echo $RESPONSE | jq '.message'
             exit 1
           fi
-          
+
           PRS_IN_MILESTONE=$(echo "$RESPONSE" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring | sed 's/^"//;s/"$//')
           echo "CHAT_GPT_CONTENT=$(echo Write down a markdown content based on this data\\n $PRS_IN_MILESTONE \\nin the following format:\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n### other package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n but with the title name of common coming first, followed by the alphabetically sorted packages.)" >> $GITHUB_ENV
 
