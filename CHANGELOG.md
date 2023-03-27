@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v13.1.2
+## v13.1.22
 
 ### common
 
@@ -25,7 +25,7 @@
 
 - [triple-media] drawer action 조건 추가 [#202](https://github.com/jaehyeon48/github-actions-test/pull/202)
 
-## v13.1.2
+## v13.1.23
 
 ### common
 
