@@ -63,7 +63,7 @@ jobs:
           printf '\n%s\n\n' "## ${{ env.CURRENT_VERSION }}" >> changelog_tmp.md
           echo -e "$changelog_content" >> changelog_tmp.md
 
-          sed -i "/^# CHANGELOG/a $(cat changelog_tmp.md)" CHANGELOG.md
+          sed -i '/^# CHANGELOG/r changelog_tmp.md' CHANGELOG.md
           rm changelog_tmp.md
 
       - name: Commit and push updated CHANGELOG
