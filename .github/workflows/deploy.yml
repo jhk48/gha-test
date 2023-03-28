@@ -30,13 +30,14 @@ jobs:
           fi
 
           PRS_IN_MILESTONE=$(echo "$RESPONSE" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring)
-          echo "PR_LIST=$PRS_IN_MILESTONE" >> $GITHUB_ENV
+          echo "PRS_IN_MILESTONE=$PRS_IN_MILESTONE" >> $GITHUB_ENV
 
       - name: Request ChatGPT to write down CHANGELOG
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
         run: |
-          CHAT_GPT_PROMPT=$(echo Hello, world! (${{ env.PR_LIST }} | sed 's/^"//;s/"$//') wow cool)
+          PR_LIST=$(echo ${{ env.PRS_IN_MILESTONE }} | sed 's/^"//;s/"$//')
+          CHAT_GPT_PROMPT=$(echo Hello, world! $PR_LISt  wow cool)
           echo $CHAT_GPT_PROMPT
           RESPONSE=$(curl -X POST https://api.openai.com/v1/chat/completions \
            -H "Content-Type: application/json" \
