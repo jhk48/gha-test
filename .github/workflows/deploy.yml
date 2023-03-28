@@ -48,7 +48,7 @@ jobs:
               "messages": [
                 {
                   "role": "user",
-                  "content": "${{ env.CHAT_GPT_CONTENT }}"
+                  "content": "$CHAT_GPT_CONTENT"
                 }
               ]
             }' 
