@@ -36,7 +36,7 @@ jobs:
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
         run: |
-          CHAT_GPT_PROMPT=(echo "${{ env.PR_LIST }}" | sed 's/^"//;s/"$//')
+          CHAT_GPT_PROMPT=(echo ${{ env.PR_LIST }} | sed 's/^"//;s/"$//')
           echo $CHAT_GPT_PROMPT
           RESPONSE=$(curl -X POST https://api.openai.com/v1/chat/completions \
            -H "Content-Type: application/json" \
