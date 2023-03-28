@@ -30,7 +30,7 @@ jobs:
           fi
 
           PRS_IN_MILESTONE=$(echo "$RESPONSE" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring | sed 's/^"//;s/"$//')
-          echo "CHAT_GPT_CONTENT=$(echo Please write a markdown content based on the provided data,\\n$PRS_IN_MILESTONE\\nin the following format:\\n### package\\n\\n- title [#lower number]\(url\)\\n- title [#higher number]\(url\)\\n\\n### package\\n\\n- title [#lower number]\(url\)\\n- title [#higher number]\(url\)\\n\\nPlease note that the common package should be listed first if it exists, followed by the other packages sorted alphabetically.)" >> $GITHUB_ENV
+          echo "CHAT_GPT_CONTENT=$(echo Please write a markdown content based on the provided data,\\n$PRS_IN_MILESTONE\\nin the following format:\\n### Package A\\n\\n- Title [#Number 1]\(url 1\)\\n- Title [#Number 2]\(url 2\)\\n\\n### Package B\\n\\n- Title [#Number 3]\(url 3\)\\n- Title [#Number 4]\(url 4\)\\n\\n...### Package N\\n\\n- Title [#Number 5]\(url 5\)\\n- Title [#Number 6]\(url 6\)\\n\\nPlease note that the pull requests should be sorted first by package name with common coming first if it exists, and then by pull request number in ascending order.)" >> $GITHUB_ENV
       
       - name: Request ChatGPT to write down CHANGELOG
         env:
