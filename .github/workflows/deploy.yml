@@ -30,7 +30,7 @@ jobs:
           fi
 
           PRS_IN_MILESTONE=$(echo "$RESPONSE" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring | sed 's/^"//;s/"$//')
-          echo "CHAT_GPT_PROMPT=$(echo Please write a markdown content based on the provided data,\\n$PRS_IN_MILESTONE\\nin the following format:\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\nPlease group the list items by their package name and sort them by their number in ascending order within each group. Then, list the package groups alphabetically. If there is a common package group, list it first.)" >> $GITHUB_ENV
+          echo "CHAT_GPT_PROMPT=$(echo Please write a markdown content based on the provided data,\\n$PRS_IN_MILESTONE\\nin the following format:\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\nPlease group the list items by their package name. Then, list the package groups alphabetically and if there is a package group name of common, list it first.)" >> $GITHUB_ENV
 
       - name: Request ChatGPT to write down CHANGELOG
         env:
