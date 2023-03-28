@@ -29,16 +29,13 @@ jobs:
             exit 1
           fi
 
-          PRS_IN_MILESTONE=$(echo "$RESPONSE" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring)
-          echo "PRS_IN_MILESTONE=$PRS_IN_MILESTONE" >> $GITHUB_ENV
+          PRS_IN_MILESTONE=$(echo "$RESPONSE" | jq '.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0)) | {title: .title, number: .number, url: .html_url, package: .labels[].name}' | jq -s tostring | sed 's/^"//;s/"$//')
+          echo "CHAT_GPT_CONTENT=$(echo Please write a markdown content based on the provided data, $PRS_IN_MILESTONE, in the following format:\n\n### Common\n\n- Title #number\n- Title #number\n\n### Other Packages\n\n- Title #number\n- Title #number\n\nPlease note that the Common package should be listed first, followed by the other packages sorted alphabetically.)" >> $GITHUB_ENV
 
       - name: Request ChatGPT to write down CHANGELOG
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
         run: |
-          PR_LIST=$(echo ${{ env.PRS_IN_MILESTONE }} | sed 's/^"//;s/"$//')
-          CHAT_GPT_PROMPT=$(echo "Please write a markdown content based on the provided data, $PR_LIST, in the following format:\n\n### Common\n\n- Title #number\n- Title #number\n\n### Other Packages\n\n- Title #number\n- Title #number\n\nPlease note that the Common package should be listed first, followed by the other packages sorted alphabetically.")
-
           RESPONSE=$(curl -X POST https://api.openai.com/v1/chat/completions \
            -H "Content-Type: application/json" \
            -H "Authorization: Bearer $OPENAI_KEY" \
@@ -48,7 +45,7 @@ jobs:
               "messages": [
                 {
                   "role": "user",
-                  "content": "$CHAT_GPT_CONTENT"
+                  "content": "${{ env.CHAT_GPT_CONTENT }}"
                 }
               ]
             }' 
