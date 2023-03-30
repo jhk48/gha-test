@@ -54,6 +54,7 @@ export interface RealtimeDataFilterOptions {
 	week52High: number;
 	week52Low: number;
 	ytdChange: number;
+	wow: string;
 }
 
 export interface RealtimeDataPerTicker<T> {
