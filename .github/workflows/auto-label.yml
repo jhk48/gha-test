@@ -1,0 +1,35 @@
+name: Label a PR with its package update
+
+on:
+  pull_request:
+    types:
+      - opened
+
+env:
+  COMMIT_USER_EMAIL: developer@triple-corp.com
+  COMMIT_USER_NAME: triple-frontend[bot]
+  CURRENT_VERSION: ${{ github.event.pull_request.milestone.title }}
+
+jobs:
+  update_changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Get changed files
+        id: files
+        run: |
+          echo "Getting changed files..."
+          CHANGED_FILES=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          "https://api.github.com/repos/${{ github.repository }}/compare/${{ github.event.pull_request.base.ref }}...${{ github.event.pull_request.head.ref }}" \
+          | jq -r '.files[].filename')
+          echo "::set-output name=files::${CHANGED_FILES}"
+          
+      - name: Print changed files
+        run: |
+          echo "Changed files:"
+          echo "${{ steps.files.outputs.files }}"
