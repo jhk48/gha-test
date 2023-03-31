@@ -8,8 +8,6 @@ name: Label a PR with its package update
 
 on:
   pull_request:
-    branches:
-      - feat/automate-changelog
     types: [opened, synchronize]
 
 jobs:
