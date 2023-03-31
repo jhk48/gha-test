@@ -7,9 +7,10 @@ name: Label a PR with its package update
     # types: [opened, synchronize]
 
 on:
-  push:
+  pull_request:
     branches:
       - feat/automate-changelog
+    types: [opened, synchronize]
 
 jobs:
   update_changelog:
