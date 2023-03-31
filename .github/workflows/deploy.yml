@@ -36,7 +36,7 @@ jobs:
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
         run: |
-          PR_LIST=$(echo ${{ env.PRS_IN_MILESTONE }} | sed 's/^"//;s/"$//')
+          PR_LIST=$(echo ${{ env.PRS_IN_MILESTONE }} | jq tostring | sed 's/^"//;s/"$//')
           # CHAT_GPT_PROMPT=$(echo Write down a markdown content based on this data\\n $PR_LIST \\nin the following format:\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n### other package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n. Please filter out emojis when writing package name in the markdown.)
           CHAT_GPT_PROMPT=$(echo "Please write me a markdown using this data \`\`\`$PR_LIST\`\`\`in the following format \\n\`\`\`\\n### \$\{package\}\\n- \$\{title\} [#\$\{number\}](\$\{url\})\\n- \$\{title\} [#\$\{number\}](\$\{url\})\\n\\n### \$\{package\}\\n\\n- \$\{title\} [#\$\{number\}](\$\{url\})\\n- \$\{title\} [#\$\{number\}](\$\{url\})\`\`\`\\nPlease filter out emojis when writing package name in the markdown, and if the item has multiple packages write it in multiple package group. ${package} should only be one package, not multiple packages.")
           
