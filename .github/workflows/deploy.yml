@@ -53,7 +53,7 @@ jobs:
               \"messages\": [
                 {
                   \"role\": \"user\",
-                  \"content\": $CHAT_GPT_PROMPT
+                  \"content\": "hello"
                 }
               ]
             }" 
