@@ -1,13 +1,9 @@
 name: Label a PR with its package update
 
-# Draft PR에서 GHA 워크플로우를 테스트 하기 위한 트리거 조건.
-# 추후 아래 조건으로 변경할 예정입니다.
-# on:
-  # pull_request:
-    # types: [opened, synchronize]
-
 on:
   pull_request:
+    branches:
+      - feat/automate-changelog    
     types: [opened, synchronize]
 
 jobs:
