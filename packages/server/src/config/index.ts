@@ -11,6 +11,8 @@ if (envFound.error) {
 	throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
 
+console.log('123')
+
 export default {
 	port: Number(process.env.PORT),
 	redisHost: process.env.REDIS_HOST,
