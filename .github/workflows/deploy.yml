@@ -20,7 +20,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - name: Fetch PRs in current version's milestone and write a question to ChatGPT
+      - name: Fetch PRs in current version's milestone
         run: |
           RESPONSE=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/search/issues?q=milestone:${{ env.CURRENT_VERSION }}+type:pr+repo:$GITHUB_REPOSITORY")
 
@@ -37,9 +37,8 @@ jobs:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
         run: |
           PR_LIST = ${{ env.PRS_IN_MILESTONE }} | sed 's/^"//;s/"$//'
-          echo PR_LIST
-
           CHAT_GPT_PROMPT=$(echo Write down a markdown content based on this data\\n $PR_LIST \\nin the following format:\\n### package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n### other package\\n\\n- title [#number]\(url\)\\n- title [#number]\(url\)\\n\\n. Please filter out emojis when writing package name in the markdown.)
+          
           RESPONSE=$(curl -X POST https://api.openai.com/v1/chat/completions \
            -H "Content-Type: application/json" \
            -H "Authorization: Bearer $OPENAI_KEY" \
