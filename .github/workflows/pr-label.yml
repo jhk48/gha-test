@@ -2,13 +2,13 @@ name: Label a PR with its package update
 
 on:
   pull_request:
-    branches:
-      - feat/automate-changelog    
     types: [opened, synchronize]
 
 jobs:
-  update_changelog:
+  label-pr:
     runs-on: ubuntu-latest
+    # =============== 테스트용. 이후 제거할 예정입니다 ===============
+    if: ${{ github.event.pull_request.head.ref == 'feat/automate-changelog' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
