@@ -41,7 +41,16 @@ jobs:
           CHAT_GPT_PROMPT=$(echo "Please write me a markdown using this data \`\`\`$PR_LIST\`\`\`in the following format \\n\`\`\`\\n### \$\{package\}\\n- \$\{title\} [#\$\{number\}](\$\{url\})\\n- \$\{title\} [#\$\{number\}](\$\{url\})\\n\\n### \$\{package\}\\n\\n- \$\{title\} [#\$\{number\}](\$\{url\})\\n- \$\{title\} [#\$\{number\}](\$\{url\})\`\`\`\\nPlease filter out emojis when writing package name in the markdown, and if the item has multiple packages write it in multiple package group. ${package} should only be one package, not multiple packages.")
           
           echo 123
-          echo \"$CHAT_GPT_PROMPT\"
+          echo "{
+            \"model\": \"gpt-3.5-turbo\",
+            \"temperature\": 0.2,
+            \"messages\": [
+              {
+                \"role\": \"user\",
+                \"content\": \"$CHAT_GPT_PROMPT\"
+              }
+            ]
+          }" 
           echo 123
 
           RESPONSE=$(curl -X POST https://api.openai.com/v1/chat/completions \
