@@ -30,9 +30,8 @@ jobs:
             exit 1
           fi
 
-          PACKAGE_NAMES=$(echo "$RESPONSE" | jq '[.files[].filename | capture("packages/(?<packageName>[^/]+)/") .packageName] | unique | tostring')
-          echo $PACKAGE_NAMES
-          # echo "CHANGED_PACKAGES=$PACKAGE_NAMES" >> $GITHUB_ENV
+          CHANGED_PACKAGES=$(echo "$RESPONSE" | jq '[.files[].filename | capture("packages/(?<packageName>[^/]+)/") .packageName] | unique | tostring')
+          echo "CHANGED_PACKAGES=$CHANGED_PACKAGES" >> $GITHUB_ENV
 
       - name: Label PR
         env:
