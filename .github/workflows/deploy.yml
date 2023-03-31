@@ -48,12 +48,12 @@ jobs:
            -H "Content-Type: application/json" \
            -H "Authorization: Bearer $OPENAI_KEY" \
            -d "{
-              \"model\": \"gpt-3.5-turbo\",
-              \"temperature\": 0.2,
-              \"messages\": [
+              'model': 'gpt-3.5-turbo',
+              'temperature': 0.2,
+              'messages': [
                 {
-                  \"role\": \"user\",
-                  \"content\": "hello"
+                  'role': 'user',
+                  'content': "hello"
                 }
               ]
             }" 
