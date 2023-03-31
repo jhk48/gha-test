@@ -2,8 +2,7 @@ name: Label a PR with its package update
 
 on:
   pull_request:
-    types:
-      - opened
+    types: [opened, synchronize]
 
 env:
   COMMIT_USER_EMAIL: developer@triple-corp.com
