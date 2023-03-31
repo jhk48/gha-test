@@ -27,7 +27,7 @@ jobs:
           "https://api.github.com/repos/${{ github.repository }}/compare/${{ github.event.pull_request.base.ref }}...${{ github.event.pull_request.head.ref }}"
           
           echo $RESPONSE
-          echo "CHANGED_PACKAGES=$CHANGED_PACKAGES" >> $GITHUB_ENV
+          # echo "CHANGED_PACKAGES=$CHANGED_PACKAGES" >> $GITHUB_ENV
       # | jq '[.files[].filename | capture("packages/(?<packageName>[^/]+)/") .packageName] | unique | tostring')
 
       # - name: Label PR
