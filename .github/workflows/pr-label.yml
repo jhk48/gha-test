@@ -22,19 +22,21 @@ jobs:
 
       - name: Get changed packages
         run: |
-          CHANGED_PACKAGES=$(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          RESPONSE=$(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
-          "https://api.github.com/repos/${{ github.repository }}/compare/${{ github.event.pull_request.base.ref }}...${{ github.event.pull_request.head.ref }}" \
-          | jq '[.files[].filename | capture("packages/(?<packageName>[^/]+)/") .packageName] | unique | tostring')
+          "https://api.github.com/repos/${{ github.repository }}/compare/${{ github.event.pull_request.base.ref }}...${{ github.event.pull_request.head.ref }}"
+          
+          echo $RESPONSE
           echo "CHANGED_PACKAGES=$CHANGED_PACKAGES" >> $GITHUB_ENV
-      
-      - name: Label PR
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PACKAGE_LABELS=$(echo ${{ env.CHANGED_PACKAGES }} | jq .)
-          curl -X POST \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels \
-            -d "{\"labels\": $PACKAGE_LABELS }"
+      # | jq '[.files[].filename | capture("packages/(?<packageName>[^/]+)/") .packageName] | unique | tostring')
+
+      # - name: Label PR
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     PACKAGE_LABELS=$(echo ${{ env.CHANGED_PACKAGES }} | jq .)
+      #     curl -X POST \
+      #       -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+      #       -H "Accept: application/vnd.github.v3+json" \
+      #       https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels \
+      #       -d "{\"labels\": $PACKAGE_LABELS }"
