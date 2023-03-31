@@ -47,16 +47,16 @@ jobs:
           RESPONSE=$(curl -X POST https://api.openai.com/v1/chat/completions \
            -H "Content-Type: application/json" \
            -H "Authorization: Bearer $OPENAI_KEY" \
-           -d "{
-              'model': 'gpt-3.5-turbo',
-              'temperature': 0.2,
-              'messages': [
+           -d '{
+              "model": "gpt-3.5-turbo",
+              "temperature": 0.2,
+              "messages": [
                 {
-                  'role': 'user',
-                  'content': "hello"
+                  "role": "user",
+                  "content": "hello"
                 }
               ]
-            }" 
+            }' 
           )
 
           echo $RESPONSE | jq
