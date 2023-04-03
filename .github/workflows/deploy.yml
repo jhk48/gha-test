@@ -23,7 +23,7 @@ jobs:
       - name: Check the milestone
         run: |
           echo "${{ env.CURRENT_VERSION }}"
-          echo ${{ github.event.pull_request }} | fromjson
+          echo ${{ toJson(github.event.pull_request) }}
           if [[ ${{ env.CURRENT_VERSION }} == null ]]; then
             echo "마일스톤을 등록해 주세요."
             exit 1
