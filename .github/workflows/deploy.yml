@@ -11,10 +11,17 @@ env:
   CURRENT_VERSION: ${{ github.event.pull_request.milestone.title }}
 
 jobs:
-  update_changelog:
+  update-changelog:
     runs-on: ubuntu-latest
     if: ${{ github.event.label.name == 'release' }}
     steps:
+      - name: Check the milestone
+        run: |
+          if [[ ${{ env.CURRENT_VERSION }} == null ]]; then
+            echo "마일스톤을 등록해 주세요."
+            exit 1
+          fi
+          
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
