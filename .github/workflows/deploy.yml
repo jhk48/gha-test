@@ -22,7 +22,7 @@ jobs:
 
       - name: Check the milestone
         run: |
-          if [[ ${{ env.CURRENT_VERSION }} == "" ]]; then
+          if [[ ${{ github.event.pull_request.milestone }} == "" ]]; then
             echo "마일스톤을 등록해 주세요."
             exit 1
           fi
