@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.label.name == 'release' }}
     steps:
-      - name: Check the milestone
+      - name: Check if a milestone exists on PR
         run: |
           if [[ $(echo ${{ github.event.pull_request.milestone }}) == "" ]]; then
             echo "마일스톤을 등록해 주세요."
