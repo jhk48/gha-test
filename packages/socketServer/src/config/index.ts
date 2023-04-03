@@ -11,7 +11,7 @@ if (envFound.error) {
 	throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
 
-console.log(1234455)
+console.log(12344554)
 
 export default {
 	port: Number(process.env.PORT),
