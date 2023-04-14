@@ -1,7 +1,7 @@
 {
   "name": "@portbullio/socket-server",
   "version": "1.0.0",
-  "author": "jaehyeon48 <imjaehyeon48@gmail.com>",
+  "author": "jaehyeon481 <imjaehyeon48@gmail.com>",
   "homepage": "https://www.portbullio.com",
   "license": "MIT",
   "main": "src/index.ts",
