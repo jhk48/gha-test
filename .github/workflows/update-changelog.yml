@@ -58,12 +58,7 @@ jobs:
            -d '{
               "model": "text-davinci-003",
               "temperature": 0,
-              "messages": [
-                {
-                  "role": "user",
-                  "content": "${{ env.CHAT_GPT_PROMPT }}"
-                }
-              ]
+              "prompt": "${{ env.CHAT_GPT_PROMPT }}"
             }' 
           )
 
