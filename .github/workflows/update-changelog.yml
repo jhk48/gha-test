@@ -57,7 +57,7 @@ jobs:
            -H "Authorization: Bearer $OPENAI_KEY" \
            -d '{
               "model": "text-davinci-003",
-              "temperature": 0
+              "temperature": 0,
               "messages": [
                 {
                   "role": "user",
