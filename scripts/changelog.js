@@ -205,14 +205,21 @@ async function fetchPrsInMilestone() {
 		return;
 	}
 
-  console.log(111111)
+	console.log(111111);
 	console.log(
-		data.items.filter(
-			({ pull_request, labels }) =>
-				!!pull_request.merged_at &&
-				labels.length > 0 &&
-				!labels.some(({ name }) => name === 'release')
-		)
+		data.items
+			.filter(
+				({ pull_request, labels }) =>
+					!!pull_request.merged_at &&
+					labels.length > 0 &&
+					!labels.some(({ name }) => name === 'release')
+			)
+			.map(({ title, number, html_url: url, labels }) => ({
+				title,
+				number,
+				url,
+				labels: labels.map(({ name }) => name)
+			}))
 	);
 }
 
