@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+const fetch = require('node-fetch');
 
 const CHAT_GPT_PROMPT = `
 Write a markdown using the given data to group markdown list items by their "package" in their "packages" array. In the following format, "<package_of_packages>" refers to an element of the "packages" array for an item.  Also, remove emojis when you write "<package_of_packages>".
