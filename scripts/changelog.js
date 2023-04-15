@@ -205,7 +205,9 @@ async function fetchPrsInMilestone() {
 		return;
 	}
 
-	console.log(data.items.filter(item => !!item.pull_request.merged_at).map(item => item.labels));
+	console.log(
+		data.items.filter(item => !!item.pull_request.merged_at).flatMap(item => item.labels)
+	);
 }
 
 async function writeChangelog() {
