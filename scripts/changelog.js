@@ -205,6 +205,7 @@ async function fetchPrsInMilestone() {
 		return;
 	}
 
+  console.log(111111)
 	console.log(
 		data.items.filter(
 			({ pull_request, labels }) =>
