@@ -154,7 +154,8 @@ async function fetchPrsInMilestone() {
 			number,
 			url,
 			labels: labels.map(({ name }) => removeEmojis(name))
-		}));
+		}))
+		.sort((a, b) => a.number - b.number);
 
 	console.log(pullRequests);
 	console.log(writeChangelog(groupPullRequestsByLabel(pullRequests)));
