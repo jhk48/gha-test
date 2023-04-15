@@ -201,7 +201,6 @@ async function fetchPrsInMilestone() {
 	console.log(await response.json());
 }
 
-console.log(process.env);
 async function writeChangelog() {
 	const response = await fetch('https://api.openai.com/v1/chat/completions', {
 		method: 'POST',
