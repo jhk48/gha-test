@@ -31,18 +31,35 @@ Example JSON data:
       "number": 2345,
       "url": "https://github.com/titicacadev/triple-frontend/pull/2345"
     },
+		{
+			"title": "css prop과 centered prop이 충돌하는 문제 수정",
+      "number": 2352,
+      "url": "https://github.com/titicacadev/triple-frontend/pull/2352"
+		},
     {
       "title": "[core-elements] Rating 컴포넌트에 최대값,최소값 설정 추가",
       "number": 2364,
       "url": "https://github.com/titicacadev/triple-frontend/pull/2364"
     }
   ],
+	"anchor": [
+		{
+			"title": "css prop과 centered prop이 충돌하는 문제 수정",
+      "number": 2352,
+      "url": "https://github.com/titicacadev/triple-frontend/pull/2352"
+		}
+	],
   "common": [
     {
       "title": "cd workflow 에러 수정",
       "number": 2351,
       "url": "https://github.com/titicacadev/triple-frontend/pull/2351"
     },
+		{
+			"title": "css prop과 centered prop이 충돌하는 문제 수정",
+      "number": 2352,
+      "url": "https://github.com/titicacadev/triple-frontend/pull/2352"
+		},
     {
       "title": "[core-elements] Rating 컴포넌트에 최대값,최소값 설정 추가",
       "number": 2364,
@@ -65,7 +82,7 @@ Example JSON data:
       "number": 2364,
       "url": "https://github.com/titicacadev/triple-frontend/pull/2364"
     }
-  ],
+  ]
 }
 \`\`\`
 Example output markdown:
@@ -73,11 +90,17 @@ Example output markdown:
 ### ab-experiments
 
 - [core-elements] story title을 소문자로 변경 [#2345](https://github.com/jaehyeon48/github-actions-test/pull/2345)
+- css prop과 centered prop이 충돌하는 문제 수정 [#2352](https://github.com/jaehyeon48/github-actions-test/pull/2352)
 - Rating 컴포넌트에 최대값,최소값 설정 추가 [#2364](https://github.com/jaehyeon48/github-actions-test/pull/2364)
+
+### anchor
+
+- css prop과 centered prop이 충돌하는 문제 수정 [#2352](https://github.com/jaehyeon48/github-actions-test/pull/2352)
 
 ### common
 
 - cd workflow 에러 수정 [#2351](https://github.com/jaehyeon48/github-actions-test/pull/2351)
+- css prop과 centered prop이 충돌하는 문제 수정 [#2352](https://github.com/jaehyeon48/github-actions-test/pull/2352)
 - Rating 컴포넌트에 최대값,최소값 설정 추가 [#2364](https://github.com/jaehyeon48/github-actions-test/pull/2364)
 
 ### core-elements
@@ -170,7 +193,7 @@ async function writeChangelog(prsInMilestone) {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: `Bearer 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`
+			Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
 		},
 		body: JSON.stringify({
 			model: 'gpt-3.5-turbo',
@@ -187,7 +210,7 @@ async function writeChangelog(prsInMilestone) {
 	const res = await response.json();
 	if (res.error) {
 		console.error(res.error.message);
-		return;
+		process.exit(1);
 	}
 
 	console.log(res.usage);
