@@ -1,23 +1,43 @@
 const fetch = require('node-fetch');
 
 const CHAT_GPT_PROMPT = `
-Write a markdown using the given data to group markdown list items by their "package" in their "packages" array. In the following format, "<package_of_packages>" refers to an element of the "packages" array for an item.  Also, remove emojis when you write "<package_of_packages>".
-Desired markdown format:
-
-### <package_of_packages>
-
-- <title_of_an_item> [#<number_of_an_item>](<url>)
-- <title_of_an_item> [#<number_of_an_item>](<url>)
-...
-
-### <package_of_packages>
-
-- <title_of_an_item> [#<number_of_an_item>](<url>)
-- <title_of_an_item> [#<number_of_an_item>](<url>)
-...
-
-Example markdown:
-
+Read the following example, and write a markdown using given input data in exactly same format. Note that you must remove emojis from package names, and all items must be grouped by their package names properly.
+\`\`\`
+[
+	{
+		"title": "[core-elements] story title을 소문자로 변경",
+		"number": 2345,
+		"url": "https://github.com/titicacadev/triple-frontend/pull/2345",
+		"packages": [":dart: core-elements"]
+	},
+	{
+		"title": "[Modals] modal handler onClose 실행 분기문 이전 버전과 동일하게 변경",
+		"number": 2347,
+		"url": "https://github.com/titicacadev/triple-frontend/pull/2347",
+		"packages": [":art: color-palette", "anchor", "ab-experiments"]
+	},
+	{
+		"title": "cd workflow 에러 수정",
+		"number": 2351,
+		"url": "https://github.com/titicacadev/triple-frontend/pull/2351",
+		"packages": [":muscle: common"]
+	},
+	{
+		"title": "[core-elements] ConfirmSelector 디자인 수정",
+		"number": 2359,
+		"url": "https://github.com/titicacadev/triple-frontend/pull/2359",
+		"packages": [":dart: core-elements"]
+	},
+	{
+		"title": "[core-elements] Rating 컴포넌트에 최대값,최소값 설정 추가",
+		"number": 2364,
+		"url": "https://github.com/titicacadev/triple-frontend/pull/2364",
+		"packages": [":dart: core-elements", "ab-experiments"]
+	}
+]
+\`\`\`
+Example output markdown:
+\`\`\`
 ### ab-experiments
 
 - [Modals] modal handler onClose 실행 분기문 이전 버전과 동일하게 변경 [#2347](https://github.com/jaehyeon48/github-actions-test/pull/2347)
@@ -31,32 +51,40 @@ Example markdown:
 
 - [Modals] modal handler onClose 실행 분기문 이전 버전과 동일하게 변경 [#2347](https://github.com/jaehyeon48/github-actions-test/pull/2347)
 
+### common
+
+- cd workflow 에러 수정 [#2351](https://github.com/jaehyeon48/github-actions-test/pull/2351)
+- [core-elements] ConfirmSelector 디자인 수정 [#2359](https://github.com/jaehyeon48/github-actions-test/pull/2359)
+
 ### core-elements
 
+- [core-elements] story title을 소문자로 변경 [#2345](https://github.com/jaehyeon48/github-actions-test/pull/2345)
+- [core-elements] ConfirmSelector 디자인 수정 [#2359](https://github.com/jaehyeon48/github-actions-test/pull/2359)
 - Rating 컴포넌트에 최대값,최소값 설정 추가 [#2364](https://github.com/jaehyeon48/github-actions-test/pull/2364)
-
-Input JSON:
+\`\`\`
+Input JSON data:
+\`\`\`
 [
 	{
-		"title": "트리플헤더 날아오기 효과의 속도를 변경합니다.",
+		"title": "[common] 트리플헤더 날아오기 효과의 속도를 변경합니다.",
 		"number": 199,
 		"url": "https://github.com/jaehyeon48/github-actions-test/pull/199",
-		"packages": ["app-installation-1", "triple-media", "ab-experiments", "common", "library"]
+		"packages": ["triple-media", "app-installation-1", "ab-experiments", "common", "library"]
 	},
 	{
-		"title": "npm 9 이상 버전 사용",
+		"title": "[common] npm 9 이상 버전 사용",
 		"number": 200,
 		"url": "https://github.com/jaehyeon48/github-actions-test/pull/200",
 		"packages": ["triple-media"]
 	},
 	{
-		"title": "img, video global style height: auto 제거",
+		"title": "[ab-experiments] img, video global style height: auto 제거",
 		"number": 201,
 		"url": "https://github.com/jaehyeon48/github-actions-test/pull/201",
 		"packages": ["ab-experiments"]
 	},
 	{
-		"title": "drawer action 조건 추가",
+		"title": "[triple-media] drawer action 조건 추가",
 		"number": 202,
 		"url": "https://github.com/jaehyeon48/github-actions-test/pull/202",
 		"packages": ["triple-media", "ab-experiments", "server", "socketServer"]
@@ -76,23 +104,50 @@ Input JSON:
 		]
 	}
 ]
+\`\`\`
+Output markdown:
 `;
 
-console.log(process.env.OPENAI_API_KEY);
 async function askToChatGpt() {
+	const response = await fetch('https://api.openai.com/v1/chat/completions', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer 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`
+		},
+		body: JSON.stringify({
+			model: 'gpt-3.5-turbo',
+			messages: [
+				{
+					role: 'user',
+					content: CHAT_GPT_PROMPT
+				}
+			],
+			temperature: 0
+		})
+	});
+
+	const { choices } = await response.json();
+	console.log(choices[0].message.content);
+}
+
+async function askToChatGpt2() {
 	const response = await fetch('https://api.openai.com/v1/completions', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
+			Authorization: `Bearer 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`
 		},
 		body: JSON.stringify({
 			model: 'text-davinci-003',
-			temperature: 0,
-			prompt: CHAT_GPT_PROMPT
+			prompt: CHAT_GPT_PROMPT,
+			max_tokens: 2000,
+			temperature: 0
 		})
 	});
 
-	console.log(await response.json());
+	const res = await response.json();
+	console.log(res.usage);
+	console.log(res.choices[0].text);
 }
-askToChatGpt();
+askToChatGpt2();
