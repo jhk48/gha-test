@@ -1,99 +1,6 @@
 const fetch = require('node-fetch');
 
-const input = `
-{
-  "test 🙆‍♂️": [
-    {
-      "title": "absdfdsa",
-      "number": 223,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/223"
-    }
-  ],
-  "app-installation-1": [
-    {
-      "title": "absdfdsa",
-      "number": 223,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/223"
-    },
-    {
-      "title": "1",
-      "number": 218,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/218"
-    }
-  ],
-  "reivews 👍": [
-    {
-      "title": "absdfdsa",
-      "number": 223,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/223"
-    }
-  ],
-  "ab-experiments": [
-    {
-      "title": "absdfdsa",
-      "number": 223,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/223"
-    },
-    {
-      "title": "[triple-media] drawer action 조건 추가",
-      "number": 202,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/202"
-    },
-    {
-      "title": "[ab-experiments] img, video global style height: auto 제거",
-      "number": 201,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/201"
-    }
-  ],
-  "common": [
-    {
-      "title": "absdfdsa",
-      "number": 223,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/223"
-    }
-  ],
-  "server": [
-    {
-      "title": "absdfdsa",
-      "number": 223,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/223"
-    },
-    {
-      "title": "[triple-media] drawer action 조건 추가",
-      "number": 202,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/202"
-    }
-  ],
-  "library": [
-    {
-      "title": "absdfdsa",
-      "number": 223,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/223"
-    }
-  ],
-  "triple-media": [
-    {
-      "title": "[triple-media] drawer action 조건 추가",
-      "number": 202,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/202"
-    },
-    {
-      "title": "[common] npm 9 이상 버전 사용",
-      "number": 200,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/200"
-    }
-  ],
-  "socketServer": [
-    {
-      "title": "[triple-media] drawer action 조건 추가",
-      "number": 202,
-      "url": "https://github.com/jaehyeon48/github-actions-test/pull/202"
-    }
-  ]
-}
-`;
-
-function getChatGptPrompt(inputData) {
+function generateChatGptPrompt(inputData) {
 	return `
 Read the following example and markdown format, and write a markdown using given input data in exactly same format. Note that you must remove emojis from package names, and all items must be grouped by their package names properly.
 Markdown format:
@@ -249,10 +156,10 @@ async function fetchPrsInMilestone() {
 			labels: labels.map(({ name }) => removeEmojis(name))
 		}));
 
-	console.log(groupPullRequestsByLabel(pullRequests));
+	console.log(writeChangelog(groupPullRequestsByLabel(pullRequests)));
 }
 
-async function writeChangelog() {
+async function writeChangelog(prsInMilestone) {
 	const response = await fetch('https://api.openai.com/v1/chat/completions', {
 		method: 'POST',
 		headers: {
@@ -264,7 +171,7 @@ async function writeChangelog() {
 			messages: [
 				{
 					role: 'user',
-					content: getChatGptPrompt(input)
+					content: generateChatGptPrompt(prsInMilestone)
 				}
 			],
 			temperature: 0
