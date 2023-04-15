@@ -1,5 +1,8 @@
 {
   "github-actions.workflows.pinned.workflows": [
     ".github/workflows/deploy.yml"
+  ],
+  "cSpell.words": [
+    "ℹ️poi"
   ]
 }

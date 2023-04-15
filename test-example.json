@@ -1,0 +1,26 @@
+{
+	"ab-experiments": [
+		{
+			"title": "absdfdsa",
+			"number": 223,
+			"url": "https://github.com/jaehyeon48/github-actions-test/pull/223"
+		},
+		{
+			"title": "[triple-media] drawer action 조건 추가",
+			"number": 202,
+			"url": "https://github.com/jaehyeon48/github-actions-test/pull/202"
+		}
+	],
+	"app-installation-1": [
+		{
+			"title": "absdfdsa",
+			"number": 223,
+			"url": "https://github.com/jaehyeon48/github-actions-test/pull/223"
+		},
+		{
+			"title": "[package-name] 가나다라마 abcde 12345",
+			"number": 87,
+			"url": "https://github.com/jaehyeon48/github-actions-test/pull/87"
+		}
+	]
+}
