@@ -90,7 +90,7 @@ async function askToChatGpt() {
 		body: JSON.stringify({
 			model: 'text-davinci-003',
 			temperature: 0,
-			prompt: CHAT_GPT_PROMPT
+			prompt: 'Is it correct to say "leave a reply"?'
 		})
 	});
 
