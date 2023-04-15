@@ -184,8 +184,7 @@ async function fetchPrsInMilestone() {
 		}))
 		.sort((a, b) => a.number - b.number);
 
-	console.log(groupPullRequestsByLabel(pullRequests));
-	writeChangelog(groupPullRequestsByLabel(pullRequests));
+	return pullRequests;
 }
 
 async function writeChangelog(prsInMilestone) {
@@ -213,8 +212,8 @@ async function writeChangelog(prsInMilestone) {
 		process.exit(1);
 	}
 
-	console.log(res.usage);
-	console.log(res.choices[0].message.content);
+	return res.choices[0].message.content;
 }
 
-fetchPrsInMilestone();
+const CHANGE_LOG = writeChangelog(groupPullRequestsByLabel(fetchPrsInMilestone()));
+console.log(CHANGE_LOG);
