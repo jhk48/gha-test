@@ -78,7 +78,7 @@ Input JSON:
 ]
 `;
 
-console.log(process.env)
+console.log(process.env.OPENAI_API_KEY);
 async function askToChatGpt() {
 	const response = await fetch('https://api.openai.com/v1/completions', {
 		method: 'POST',
