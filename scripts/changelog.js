@@ -156,12 +156,11 @@ async function fetchPrsInMilestone() {
 			labels: labels.map(({ name }) => removeEmojis(name))
 		}));
 
+	console.log(pullRequests);
 	console.log(writeChangelog(groupPullRequestsByLabel(pullRequests)));
 }
 
 async function writeChangelog(prsInMilestone) {
-	const prmpt = generateChatGptPrompt(JSON.stringify(prsInMilestone));
-	console.log(prmpt);
 	const response = await fetch('https://api.openai.com/v1/chat/completions', {
 		method: 'POST',
 		headers: {
@@ -173,7 +172,7 @@ async function writeChangelog(prsInMilestone) {
 			messages: [
 				{
 					role: 'user',
-					content: prmpt
+					content: generateChatGptPrompt(JSON.stringify(prsInMilestone))
 				}
 			],
 			temperature: 0
