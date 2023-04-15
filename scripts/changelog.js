@@ -186,16 +186,22 @@ Output markdown:
 `;
 }
 
-// async function fetchPrsInMilestone() {
-//   const response = await fetch(`https://api.github.com/search/issues?q=milestone:v13.2.3+type:pr+repo:jaehyeon48/github-actions-test&per_page=100`)
-//   curl -L \
-//   -H "Accept: application/vnd.github+json" \
-//   -H "Authorization: Bearer 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"\
-//   -H "X-GitHub-Api-Version: 2022-11-28" \
-//   "https://api.github.com/search/issues?q=milestone:v13.2.3+type:pr+repo:jaehyeon48/github-actions-test&per_page=100" | jq 'reduce (.items[] | select(.pull_request.merged_at != null and (.labels | map(select(.name == "release")) | length == 0))) as $item ({}; .[$item.labels[].name] += [{title: $item.title, number: $item.number, url: $item.html_url}])'
-// }
+async function fetchPrsInMilestone() {
+	const response = await fetch(
+		`https://api.github.com/search/issues?q=milestone:${process.env.CURRENT_VERSION}+type:pr+repo:${process.env.GITHUB_REPOSITORY}&per_page=100`,
+		{
+			headers: {
+				Accept: 'application/vnd.github+json',
+				Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+				'X-GitHub-Api-Version': '2022-11-28'
+			}
+		}
+	);
 
-console.log(process.env)
+	console.log(await response.json());
+}
+
+console.log(process.env);
 async function writeChangelog() {
 	const response = await fetch('https://api.openai.com/v1/chat/completions', {
 		method: 'POST',
@@ -225,4 +231,4 @@ async function writeChangelog() {
 	console.log(res.choices[0].message.content);
 }
 
-writeChangelog();
+fetchPrsInMilestone();
