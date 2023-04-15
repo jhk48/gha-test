@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 const CHAT_GPT_PROMPT = `
 Write a markdown using the given data to group markdown list items by their "package" in their "packages" array. In the following format, "<package_of_packages>" refers to an element of the "packages" array for an item.  Also, remove emojis when you write "<package_of_packages>".
 Desired markdown format:
@@ -76,4 +78,21 @@ Input JSON:
 ]
 `;
 
-console.log(`echo "CHAT_GPT_PROMPT=${CHAT_GPT_PROMPT}" >> $GITHUB_ENV`);
+const OPENAI_KEY = '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';
+
+async function askToChatGpt() {
+	const response = await fetch('https://api.openai.com/v1/completions', {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${OPENAI_KEY}`
+		},
+		body: JSON.stringify({
+			model: 'text-davinci-003',
+			temperature: 0,
+			prompt: CHAT_GPT_PROMPT
+		})
+	});
+
+	console.log(await response.json());
+}
+askToChatGpt();

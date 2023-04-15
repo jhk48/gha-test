@@ -30,5 +30,3 @@ jobs:
       - name: Execute Changelog JavaScript
         run: node scripts/changelog.js
 
-      - name: Print Prompt
-        run: echo $CHAT_GPT_PROMPT
