@@ -78,6 +78,7 @@ Input JSON:
 ]
 `;
 
+console.log(process.env)
 async function askToChatGpt() {
 	const response = await fetch('https://api.openai.com/v1/completions', {
 		method: 'POST',
