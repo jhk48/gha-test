@@ -187,6 +187,12 @@ Output markdown:
 `;
 }
 
+function removeEmojis(str) {
+	const emojiRegex =
+		/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F1E0}-\u{1F1FF}\u{1F191}-\u{1F251}\u{FE0E}\u{FE0F}]+/gu;
+	return str.replace(emojiRegex, '');
+}
+
 async function fetchPrsInMilestone() {
 	const response = await fetch(
 		`https://api.github.com/search/issues?q=milestone:${process.env.CURRENT_VERSION}+type:pr+repo:${process.env.GITHUB_REPOSITORY}&per_page=100`,
@@ -200,12 +206,11 @@ async function fetchPrsInMilestone() {
 	);
 
 	const data = await response.json();
-	if (data.total_count === null) {
+	if (data.total_count === undefined) {
 		console.error(data.message);
 		return;
 	}
 
-	console.log(111111);
 	console.log(
 		data.items
 			.filter(
@@ -218,7 +223,7 @@ async function fetchPrsInMilestone() {
 				title,
 				number,
 				url,
-				labels: labels.map(({ name }) => name)
+				labels: labels.map(({ name }) => removeEmojis(name))
 			}))
 	);
 }
