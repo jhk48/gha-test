@@ -101,13 +101,14 @@ Markdown format:
 ### <package_name>
 
 - <title> [#<number>](<url>)
+- <title> [#<number>](<url>)
 \`\`\`
 JSON data format:
 \`\`\`
 {
   "package_name": [
     {
-      "title": "...,
+      "title": "...",
       "number": 123,
       "url": "..."
     }
@@ -198,7 +199,13 @@ async function fetchPrsInMilestone() {
 		}
 	);
 
-	console.log(await response.json());
+	const data = await response.json();
+	if (data.total_count === null) {
+		console.error(data.message);
+		return;
+	}
+
+	console.log(data);
 }
 
 async function writeChangelog() {
