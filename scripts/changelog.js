@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 
 function generateChatGptPrompt(inputData) {
-  console.log(inputData)
 	return `
 Read the following example and markdown format, and write a markdown using given input data in exactly same format. Note that you must remove emojis from package names, and all items must be grouped by their package names properly.
 Markdown format:
@@ -161,6 +160,8 @@ async function fetchPrsInMilestone() {
 }
 
 async function writeChangelog(prsInMilestone) {
+	const prmpt = generateChatGptPrompt(prsInMilestone);
+  console.log(prmpt)
 	const response = await fetch('https://api.openai.com/v1/chat/completions', {
 		method: 'POST',
 		headers: {
@@ -172,7 +173,7 @@ async function writeChangelog(prsInMilestone) {
 			messages: [
 				{
 					role: 'user',
-					content: generateChatGptPrompt(prsInMilestone)
+					content: prmpt
 				}
 			],
 			temperature: 0
