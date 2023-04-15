@@ -160,8 +160,8 @@ async function fetchPrsInMilestone() {
 }
 
 async function writeChangelog(prsInMilestone) {
-	const prmpt = generateChatGptPrompt(prsInMilestone);
-  console.log(prmpt)
+	const prmpt = generateChatGptPrompt(JSON.stringify(prsInMilestone));
+	console.log(prmpt);
 	const response = await fetch('https://api.openai.com/v1/chat/completions', {
 		method: 'POST',
 		headers: {
