@@ -76,4 +76,4 @@ Input JSON:
 ]
 `;
 
-console.log(`::set-output name=chat_gpt_prompt::${CHAT_GPT_PROMPT}`);
+console.log(`echo "CHAT_GPT_PROMPT=${CHAT_GPT_PROMPT}" >> $GITHUB_ENV`);

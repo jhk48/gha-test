@@ -28,10 +28,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Execute Changelog JavaScript
-        id: get-prompt
         run: node scripts/changelog.js
-        env:
-          CHAT_GPT_PROMPT: ${{ steps.get-prompt.outputs.chat_gpt_prompt }}
 
       - name: Print Prompt
         run: echo $CHAT_GPT_PROMPT
