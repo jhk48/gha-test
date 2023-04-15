@@ -27,6 +27,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
+      - run: npm install
+      
       - name: Execute Changelog JavaScript
         run: node scripts/changelog.js
 
