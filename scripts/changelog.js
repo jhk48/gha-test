@@ -200,6 +200,23 @@ function removeEmojis(str) {
 		.trim();
 }
 
+function groupPullRequestsByLabel(pullRequests) {
+	return pullRequests.reduce((result, { labels, title, number, url }) => {
+		labels.forEach(label => {
+			if (!result[label]) {
+				result[label] = [];
+			}
+			result[label].push({
+				title,
+				number,
+				url
+			});
+		});
+
+		return result;
+	}, {});
+}
+
 async function fetchPrsInMilestone() {
 	const response = await fetch(
 		`https://api.github.com/search/issues?q=milestone:${process.env.CURRENT_VERSION}+type:pr+repo:${process.env.GITHUB_REPOSITORY}&per_page=100`,
@@ -218,21 +235,21 @@ async function fetchPrsInMilestone() {
 		process.exit(1);
 	}
 
-	console.log(
-		data.items
-			.filter(
-				({ pull_request, labels }) =>
-					!!pull_request.merged_at &&
-					labels.length > 0 &&
-					!labels.some(({ name }) => name === 'release')
-			)
-			.map(({ title, number, html_url: url, labels }) => ({
-				title,
-				number,
-				url,
-				labels: labels.map(({ name }) => removeEmojis(name))
-			}))
-	);
+	const pullRequests = data.items
+		.filter(
+			({ pull_request, labels }) =>
+				!!pull_request.merged_at &&
+				labels.length > 0 &&
+				!labels.some(({ name }) => name === 'release')
+		)
+		.map(({ title, number, html_url: url, labels }) => ({
+			title,
+			number,
+			url,
+			labels: labels.map(({ name }) => removeEmojis(name))
+		}));
+
+	console.log(groupPullRequestsByLabel(pullRequests));
 }
 
 async function writeChangelog() {
