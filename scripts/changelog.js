@@ -108,7 +108,7 @@ function removeEmojis(str) {
 }
 
 function groupPullRequestsByLabel(pullRequests) {
-	return pullRequests.reduce((result, { labels, title, number, url }) => {
+	const groupedPullRequests = pullRequests.reduce((result, { labels, title, number, url }) => {
 		labels.forEach(label => {
 			if (!result[label]) {
 				result[label] = [];
@@ -122,6 +122,10 @@ function groupPullRequestsByLabel(pullRequests) {
 
 		return result;
 	}, {});
+
+	return Object.keys(groupedPullRequests)
+		.sort((keyA, keyB) => keyA.toLowerCase().localeCompare(keyB.toLowerCase()))
+		.reduce((acc, key) => ({ ...acc, [key]: groupedPullRequests[key] }), {});
 }
 
 async function fetchPrsInMilestone() {
