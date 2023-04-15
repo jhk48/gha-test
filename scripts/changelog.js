@@ -206,7 +206,12 @@ async function fetchPrsInMilestone() {
 	}
 
 	console.log(
-		data.items.filter(item => !!item.pull_request.merged_at).flatMap(item => item.labels)
+		data.items.filter(
+			({ pull_request, labels }) =>
+				!!pull_request.merged_at &&
+				labels.length > 0 &&
+				!labels.some(({ name }) => name === 'release')
+		)
 	);
 }
 
