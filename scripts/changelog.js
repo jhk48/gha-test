@@ -185,7 +185,7 @@ async function fetchPrsInMilestone() {
 		.sort((a, b) => a.number - b.number);
 
 	console.log(groupPullRequestsByLabel(pullRequests));
-	console.log(writeChangelog(groupPullRequestsByLabel(pullRequests)));
+	writeChangelog(groupPullRequestsByLabel(pullRequests));
 }
 
 async function writeChangelog(prsInMilestone) {
