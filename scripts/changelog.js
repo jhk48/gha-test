@@ -130,13 +130,13 @@ function removeEmojis(str) {
 		.trim();
 }
 
-function groupPullRequestsByLabel(pullRequests) {
-	const groupedPullRequests = pullRequests.reduce((result, { labels, title, number, url }) => {
-		labels.forEach(label => {
-			if (!result[label]) {
-				result[label] = [];
+function groupPullRequestsByPackage(pullRequests) {
+	const groupedPullRequests = pullRequests.reduce((result, { packages, title, number, url }) => {
+		packages.forEach(pkg => {
+			if (!result[pkg]) {
+				result[pkg] = [];
 			}
-			result[label].push({
+			result[pkg].push({
 				title,
 				number,
 				url
@@ -180,7 +180,7 @@ async function fetchPrsInMilestone() {
 			title,
 			number,
 			url,
-			labels: labels.map(({ name }) => removeEmojis(name))
+			packages: labels.map(({ name }) => removeEmojis(name))
 		}))
 		.sort((a, b) => a.number - b.number);
 
@@ -215,5 +215,8 @@ async function writeChangelog(prsInMilestone) {
 	return res.choices[0].message.content;
 }
 
-const CHANGE_LOG = writeChangelog(groupPullRequestsByLabel(fetchPrsInMilestone()));
-console.log(CHANGE_LOG);
+async function main() {
+	const CHANGE_LOG = await writeChangelog(groupPullRequestsByPackage(await fetchPrsInMilestone()));
+	console.log(CHANGE_LOG);
+}
+main();
