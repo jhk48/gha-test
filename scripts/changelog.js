@@ -224,7 +224,7 @@ async function main() {
 	const changelogFile = fs.readFileSync('CHANGELOG.md', 'utf8');
 	const lines = changelogFile.split('\n');
 	lines.splice(2, 0, `## ${process.env.CURRENT_VERSION}\n\n`, `${changelogContent}\n`);
-	fs.appendFileSync('CHANGELOG.md', lines.join('\n'), 'utf-8');
+	fs.writeFileSync('CHANGELOG.md', lines.join('\n'), 'utf-8');
 }
 
 main();
