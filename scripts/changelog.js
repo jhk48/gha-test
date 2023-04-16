@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const fs = require('fs')
+const fs = require('fs');
 
 function generateChatGptPrompt(inputData) {
 	return `
@@ -217,8 +217,14 @@ async function writeChangelog(prsInMilestone) {
 }
 
 async function main() {
-	const CHANGELOG = await writeChangelog(groupPullRequestsByPackage(await fetchPrsInMilestone()));
-	fs.writeFileSync('CHANGELOG.md', CHANGELOG);
+	const changelogContent = await writeChangelog(
+		groupPullRequestsByPackage(await fetchPrsInMilestone())
+	);
+
+	const changelogFile = fs.readFileSync('CHANGELOG.md', 'utf8');
+	const lines = changelogFile.split('\n');
+	lines.splice(2, 0, changelogContent);
+	fs.appendFileSync('CHANGELOG.md', lines.join('\n'), 'utf-8');
 }
 
 main();
