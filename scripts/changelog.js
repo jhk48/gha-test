@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const fs = require('fs')
 
 function generateChatGptPrompt(inputData) {
 	return `
@@ -217,7 +218,7 @@ async function writeChangelog(prsInMilestone) {
 
 async function main() {
 	const CHANGELOG = await writeChangelog(groupPullRequestsByPackage(await fetchPrsInMilestone()));
-	console.log(`CHANGELOG_CONTENT=${CHANGELOG} >> $GITHUB_ENV`);
+	fs.writeFileSync('CHANGELOG.md', CHANGELOG);
 }
 
 main();

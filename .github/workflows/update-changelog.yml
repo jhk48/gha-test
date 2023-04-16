@@ -44,6 +44,12 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Echo
+      - name: Commit and push updated CHANGELOG
+        env:
+          GITHUB_TOKEN: ${{ secrets.TRIPLE_BOT_GITHUB_TOKEN }}
         run: |
-          echo ${{ env.CHANGELOG_CONTENT }}
+          git config --local user.email "${{ env.COMMIT_USER_EMAIL }}"
+          git config --local user.name "${{ env.COMMIT_USER_NAME }}"
+          git add CHANGELOG.md
+          git commit -m "Update ${{ env.CURRENT_VERSION }} CHANGELOG"
+          git push
