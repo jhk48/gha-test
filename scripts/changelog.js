@@ -216,7 +216,8 @@ async function writeChangelog(prsInMilestone) {
 }
 
 async function main() {
-	const CHANGE_LOG = await writeChangelog(groupPullRequestsByPackage(await fetchPrsInMilestone()));
-	console.log(CHANGE_LOG);
+	const CHANGELOG = await writeChangelog(groupPullRequestsByPackage(await fetchPrsInMilestone()));
+	console.log(`CHANGELOG_CONTENT=${CHANGELOG} >> $GITHUB_ENV`);
 }
+
 main();
