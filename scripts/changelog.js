@@ -120,9 +120,14 @@ Output markdown:
 }
 
 function removeEmojis(str) {
-	const emojiShortcodeRegex = /:.*:/gu;
+	const emojiShortCodeRegex = /:.*:/gu;
+	const variationSelectorRegex = /[\uFE00-\uFE0F]/g;
 
-	return str.replace(emojiRegex(), '').replace(emojiShortcodeRegex, '').trim();
+	return str
+		.replace(emojiRegex(), '')
+		.replace(emojiShortCodeRegex, '')
+		.replace(variationSelectorRegex, '')
+		.trim();
 }
 
 function groupPullRequestsByPackage(pullRequests) {
