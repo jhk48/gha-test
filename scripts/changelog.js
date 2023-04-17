@@ -1,8 +1,5 @@
-/* eslint-disable no-console */
-/* eslint-disable camelcase */
-const fs = require('fs');
-
 const fetch = require('node-fetch');
+const fs = require('fs');
 
 function generateChatGptPrompt(inputData) {
 	return `
@@ -121,13 +118,27 @@ Output markdown:
 `;
 }
 
+function removeEmojis(str) {
+	const emojiShortcodeRegex = /:[^:\s]+:/gu;
+	const emojiRegex =
+		/([\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F1E0}-\u{1F1FF}\u{1F191}-\u{1F251}\u{FE0E}\u{FE0F}]|[\u{1F3FB}-\u{1F3FF}][\u{1F9B0}-\u{1F9B3}])|([\u{200D}\u{FE0E}\u{FE0F}]|[\u{1F3FB}-\u{1F3FF}])/gu;
+	const emojiPresentationRegex = /\p{Emoji_Presentation}/gu;
+	const emojiModifierRegex = /\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?/gu;
+
+	return str
+		.replace(emojiRegex, '')
+		.replace(emojiPresentationRegex, '')
+		.replace(emojiModifierRegex, '')
+		.replace(emojiShortcodeRegex)
+		.trim();
+}
+
 function groupPullRequestsByPackage(pullRequests) {
 	const groupedPullRequests = pullRequests.reduce((result, { packages, title, number, url }) => {
 		packages.forEach(pkg => {
 			if (!result[pkg]) {
 				result[pkg] = [];
 			}
-
 			result[pkg].push({
 				title,
 				number,
@@ -145,7 +156,7 @@ function groupPullRequestsByPackage(pullRequests) {
 
 async function fetchPrsInMilestone() {
 	const response = await fetch(
-		`https://api.github.com/search/issues?q=milestone:v12.2.0+type:pr+repo:titicacadev/triple-frontend&per_page=100`,
+		`https://api.github.com/search/issues?q=milestone:${process.env.CURRENT_VERSION}+type:pr+repo:${process.env.GITHUB_REPOSITORY}&per_page=100`,
 		{
 			headers: {
 				Accept: 'application/vnd.github+json',
@@ -157,7 +168,7 @@ async function fetchPrsInMilestone() {
 
 	const data = await response.json();
 	if (data.total_count === undefined) {
-		console.log(data.message);
+		console.error(data.message);
 		process.exit(1);
 	}
 
@@ -172,11 +183,9 @@ async function fetchPrsInMilestone() {
 			title,
 			number,
 			url,
-			packages: labels.map(({ name }) => name)
+			packages: labels.map(({ name }) => removeEmojis(name))
 		}))
 		.sort((a, b) => a.number - b.number);
-
-	console.log(pullRequests);
 
 	return pullRequests;
 }
@@ -202,7 +211,7 @@ async function writeChangelog(prsInMilestone) {
 
 	const res = await response.json();
 	if (res.error) {
-		console.log(res.error.message);
+		console.error(res.error.message);
 		process.exit(1);
 	}
 
