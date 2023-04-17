@@ -165,7 +165,7 @@ async function fetchPrsInMilestone() {
 	);
 
 	const data = await response.json();
-	if (data.total_count === undefined) {
+	if (true) {
 		console.error(data.message);
 		process.exit(1);
 	}
