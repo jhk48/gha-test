@@ -145,7 +145,7 @@ function groupPullRequestsByPackage(pullRequests) {
 
 async function fetchPrsInMilestone() {
 	const response = await fetch(
-		`https://api.github.com/search/issues?q=milestone:${process.env.CURRENT_VERSION}+type:pr+repo:${process.env.GITHUB_REPOSITORY}&per_page=100`,
+		`https://api.github.com/search/issues?q=milestone:v12.2.0+type:pr+repo:titicacadev/triple-frontend&per_page=100`,
 		{
 			headers: {
 				Accept: 'application/vnd.github+json',
@@ -175,6 +175,8 @@ async function fetchPrsInMilestone() {
 			packages: labels.map(({ name }) => name)
 		}))
 		.sort((a, b) => a.number - b.number);
+
+	console.log(pullRequests);
 
 	return pullRequests;
 }
