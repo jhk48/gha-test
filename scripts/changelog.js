@@ -129,7 +129,7 @@ function removeEmojis(str) {
 		.replace(emojiRegex, '')
 		.replace(emojiPresentationRegex, '')
 		.replace(emojiModifierRegex, '')
-		.replace(emojiShortcodeRegex)
+		.replace(emojiShortcodeRegex, '')
 		.trim();
 }
 
@@ -183,7 +183,7 @@ async function fetchPrsInMilestone() {
 			title,
 			number,
 			url,
-			packages: labels.map(({ name }) => name.replace(/[^\w\s-]|:[a-z_]+:/g, ''))
+			packages: labels.map(({ name }) => removeEmojis(name))
 		}))
 		.sort((a, b) => a.number - b.number);
 
