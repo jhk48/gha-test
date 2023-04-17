@@ -183,7 +183,7 @@ async function fetchPrsInMilestone() {
 			title,
 			number,
 			url,
-			packages: labels.map(({ name }) => removeEmojis(name))
+			packages: labels.map(({ name }) => name.replace(/[^\w\s-]|:[a-z_]+:/g, ''))
 		}))
 		.sort((a, b) => a.number - b.number);
 
