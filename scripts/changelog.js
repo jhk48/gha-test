@@ -165,7 +165,7 @@ async function fetchPrsInMilestone() {
 	);
 
 	const data = await response.json();
-	if (true) {
+	if (data.total_count === undefined) {
 		console.error(data.message);
 		process.exit(1);
 	}
@@ -227,4 +227,6 @@ async function main() {
 	fs.writeFileSync('CHANGELOG.md', lines.join('\n'), 'utf-8');
 }
 
+console.log(process.env.OPENAI_API_KEY)
+console.log(process.env.GITHUB_TOKEN)
 main();
