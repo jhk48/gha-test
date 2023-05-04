@@ -56,7 +56,7 @@ jobs:
           git config --local user.name "${{ env.COMMIT_USER_NAME }}"
           git add CHANGELOG.md
           git commit -m "Update ${{ env.CURRENT_VERSION }} CHANGELOG"
-          git log
+          git status
           git fetch origin ${{ github.head_ref }}
           git rebase origin/${{ github.head_ref }}
           git push origin ${{ github.head_ref }}
