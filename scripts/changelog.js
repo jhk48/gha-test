@@ -1,6 +1,9 @@
+/* eslint-disable no-console */
+/* eslint-disable camelcase */
+const fs = require('fs');
+
 const fetch = require('node-fetch');
 const emojiRegex = require('emoji-regex');
-const fs = require('fs');
 
 function generateChatGptPrompt(inputData) {
 	return `
@@ -136,6 +139,7 @@ function groupPullRequestsByPackage(pullRequests) {
 			if (!result[pkg]) {
 				result[pkg] = [];
 			}
+
 			result[pkg].push({
 				title,
 				number,
@@ -153,7 +157,7 @@ function groupPullRequestsByPackage(pullRequests) {
 
 async function fetchPrsInMilestone() {
 	const response = await fetch(
-		`https://api.github.com/search/issues?q=milestone:v12.2.0+type:pr+repo:titicacadev/triple-frontend&per_page=100`,
+		`https://api.github.com/search/issues?q=milestone:${process.env.CURRENT_VERSION}+type:pr+repo:${process.env.GITHUB_REPOSITORY}&per_page=100`,
 		{
 			headers: {
 				Accept: 'application/vnd.github+json',
@@ -165,7 +169,7 @@ async function fetchPrsInMilestone() {
 
 	const data = await response.json();
 	if (data.total_count === undefined) {
-		console.error(data.message);
+		console.log(data.message);
 		process.exit(1);
 	}
 
@@ -184,7 +188,6 @@ async function fetchPrsInMilestone() {
 		}))
 		.sort((a, b) => a.number - b.number);
 
-	console.log(pullRequests);
 	return pullRequests;
 }
 
@@ -209,7 +212,7 @@ async function writeChangelog(prsInMilestone) {
 
 	const res = await response.json();
 	if (res.error) {
-		console.error(res.error.message);
+		console.log(res.error.message);
 		process.exit(1);
 	}
 

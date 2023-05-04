@@ -58,4 +58,4 @@ jobs:
           git commit -m "Update ${{ env.CURRENT_VERSION }} CHANGELOG"
           git fetch origin ${{ github.head_ref }}
           git rebase origin/${{ github.head_ref }}
-          git push origin/${{ github.head_ref }}
+          git push origin ${{ github.head_ref }}
