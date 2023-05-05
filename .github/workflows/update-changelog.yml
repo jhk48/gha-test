@@ -36,13 +36,8 @@ jobs:
           registry-url: ${{ env.NPM_REGISTRY_URL }}
           cache: 'npm'
 
-      - run: npm ci node-fetch prettier
-
       - name: Execute Changelog JavaScript
         run: node scripts/changelog.js
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run prettier on CHANGELOG.md
         run: npx prettier --write CHANGELOG.md

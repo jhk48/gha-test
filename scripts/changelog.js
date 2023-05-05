@@ -208,14 +208,7 @@ async function writeChangelog(prsInMilestone) {
 }
 
 async function main() {
-	const changelogContent = await writeChangelog(
-		groupPullRequestsByPackage(await fetchPrsInMilestone())
-	);
-
-	const changelogFile = fs.readFileSync('CHANGELOG.md', 'utf8');
-	const lines = changelogFile.split('\n');
-	lines.splice(2, 0, `## ${process.env.CURRENT_VERSION}\n`, `${changelogContent}\n`);
-	fs.writeFileSync('CHANGELOG.md', lines.join('\n'), 'utf-8');
+	fs.writeFileSync('CHANGELOG.md', 'hello, world', 'utf-8');
 }
 
 main();
