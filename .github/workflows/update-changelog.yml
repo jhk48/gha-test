@@ -11,7 +11,6 @@ env:
   CURRENT_VERSION: ${{ github.event.pull_request.milestone.title }}
   NODE_VERSION: 'lts/*'
   NPM_REGISTRY_URL: 'https://registry.npmjs.org'
-  NODE_AUTH_TOKEN: ${{ secrets.READ_ONLY_NPM_TOKEN }}
 
 jobs:
   update-changelog:
