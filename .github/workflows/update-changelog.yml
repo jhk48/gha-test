@@ -36,8 +36,6 @@ jobs:
           registry-url: ${{ env.NPM_REGISTRY_URL }}
           cache: 'npm'
 
-      - run: npm ci prettier
-
       - name: Execute Changelog JavaScript
         run: node scripts/changelog.js
 
