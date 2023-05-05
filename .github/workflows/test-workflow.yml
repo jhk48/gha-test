@@ -1,0 +1,15 @@
+name: CI
+on:
+  push:
+    branches:
+      - '**'
+
+env:
+  NODE_VERSION: 'lts/*'
+  NPM_REGISTRY_URL: 'https://registry.npmjs.org'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "test"
