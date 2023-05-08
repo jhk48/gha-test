@@ -39,6 +39,8 @@ jobs:
 
       - name: Execute Changelog JavaScript
         run: node scripts/changelog.js
+        env:
+          TEST_SECRET: ${{ secrets.TEST_SECRET }}
 
       - name: Run prettier on CHANGELOG.md
         run: npx prettier --write CHANGELOG.md
