@@ -27,6 +27,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
+          token: ${{ secrets.PAT }}
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Setup Node.js ${{ env.NODE_VERSION }}
@@ -38,6 +39,8 @@ jobs:
 
       - name: Execute Changelog JavaScript
         run: node scripts/changelog.js
+        env:
+          TEST_SECRET: ${{ secrets.TEST_SECRET }}
 
       - name: Run prettier on CHANGELOG.md
         run: npx prettier --write CHANGELOG.md

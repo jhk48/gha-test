@@ -3,7 +3,8 @@
 const fs = require('fs');
 
 async function main() {
-	fs.writeFileSync('CHANGELOG.md', 'hello, world', 'utf-8');
+	console.log(process.env.TEST_SECRET)
+	fs.writeFileSync('CHANGELOG.md', `hello, world ${Math.random()}`, 'utf-8');
 }
 
 main();
